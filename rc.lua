@@ -85,6 +85,7 @@ shifty.config.tags = {
 		exclusive	= false,
 		position	= 4,
 		init	= true,
+		max_clients	= 4,
 		screen	= 1,
 		spawn	= terminal .. " -e master\:ls2621"
 	},
@@ -131,7 +132,7 @@ shifty.config.apps = {
 		screen	= 1
 	},
 	{
-		match = { "master:ls2621" },
+		match = { "ls2621:master" },
 		tag	= "LTS",
 		screen	= 1
 	},
