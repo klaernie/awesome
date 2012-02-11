@@ -22,7 +22,14 @@ terminal = "gnome-terminal"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
-hostname = os.getenv("HOSTNAME")
+-- Determine hostname (stolen from https://github.com/xtaran )
+local io = { popen = io.popen }
+local f = io.popen("hostname")
+local hostname = f:read("*all")
+f:close()
+hostname = string.gsub(hostname, '[\n\r]+', '')
+naughty.notify ( { text = "awesome running on " .. hostname } )
+
 if hostname == "sapdeb2" then
   autorunsapdeb = true
 else
