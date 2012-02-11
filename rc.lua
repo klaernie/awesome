@@ -121,7 +121,7 @@ shifty.config.apps = {
 		screen	= 1
 	},
 	{
-		match = { "SAPGUI", "CSN" },
+		match = { "SAPGUI", "CSN", "com-sap-platin-Gui" },
 		tag	= "saplogon",
 		screen	= 1
 	},
