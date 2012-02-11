@@ -22,6 +22,13 @@ terminal = "gnome-terminal"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
+hostname = os.getenv("HOSTNAME")
+if hostname == "sapdeb2" then
+  autorunsapdeb = true
+else
+  autorunsapdeb = false
+end
+
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 -- If you do not like this or do not have such a key,
@@ -66,7 +73,7 @@ shifty.config.tags = {
 		mwfact	= 0.5,
 		exclusive	= true,
 		position	= 2,
-		init	= true,
+		init	= autorunsapdeb,
 		screen	= 1,
 		spawn	= "css"
 	},
@@ -75,7 +82,7 @@ shifty.config.tags = {
 		mwfact	= 0.5,
 		exclusive	= true,
 		position	= 3,
-		init	= true,
+		init	= autorunsapdeb,
 		screen	= 1,
 		spawn	= "remmina"
 	},
@@ -84,10 +91,10 @@ shifty.config.tags = {
 		mwfact	= 0.5,
 		exclusive	= false,
 		position	= 4,
-		init	= true,
+		init	= autorunsapdeb,
 		max_clients	= 4,
 		screen	= 1,
-		spawn	= terminal .. " -e master\:ls2621 -t ls2621:master"
+		spawn	= terminal .. " -e master\:ls2621 -t ls2621:master",
 	},
 	util = {
 		layout	= awful.layout.suit.tile,
