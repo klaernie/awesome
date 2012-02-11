@@ -117,6 +117,12 @@ shifty.config.apps = {
 		screen	= 1
 	},
 	{
+		match = {"Buddy-Liste"},
+		tag	= "chat",
+		slave	= true,
+		screen	= 1
+	},
+	{
 		match = {"Buddy-Liste", "pidgin", "Pidgin" },
 		tag	= "chat",
 		screen	= 1
