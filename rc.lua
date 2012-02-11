@@ -338,24 +338,23 @@ globalkeys = awful.util.table.join(
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run({ prompt = "Run Lua code: " },
-                  mypromptbox[mouse.screen].widget,
-                  awful.util.eval, nil,
-                  awful.util.getdir("cache") .. "/history_eval")
-              end)
+    awful.key({ modkey },            "x",     function ()
+						  awful.prompt.run({ prompt = "Run Lua code: " },
+						  mypromptbox[mouse.screen].widget,
+						  awful.util.eval, nil,
+						  awful.util.getdir("cache") .. "/history_eval")
+					      end),
 
     -- shifty
     awful.key({modkey}, "t", function() shifty.add({ rel_index = 1 }) end),
-    awful.key({modkey}, "r", shifty.rename),
-    awful.key({modkey}, "w", shifty.del),
+    awful.key({modkey}, "c", shifty.rename),
+    awful.key({modkey}, "w", shifty.del)
 
 )
 
 clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
-    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
+    awful.key({ modkey,           }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
