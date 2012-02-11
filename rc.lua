@@ -7,6 +7,9 @@ require("beautiful")
 -- Notification library
 require("naughty")
 
+-- shifty
+require("shifty")
+
 -- Load Debian menu entries
 require("debian.menu")
 
@@ -372,6 +375,7 @@ for i = 1, keynumber do
                       end
                   end))
 end
+
 
 clientbuttons = awful.util.table.join(
     awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
