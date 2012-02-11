@@ -68,7 +68,7 @@ shifty.config.tags = {
 		position	= 2,
 		init	= true,
 		screen	= 1,
-		spawn	= "guilogon"
+		spawn	= "css"
 	},
 	remmina = {
 		layout	= awful.layout.suit.max,
