@@ -87,7 +87,7 @@ shifty.config.tags = {
 		init	= true,
 		max_clients	= 4,
 		screen	= 1,
-		spawn	= terminal .. " -e master\:ls2621"
+		spawn	= terminal .. " -e master\:ls2621 -t ls2621:master"
 	},
 	util = {
 		layout	= awful.layout.suit.tile,
@@ -132,7 +132,7 @@ shifty.config.apps = {
 		screen	= 1
 	},
 	{
-		match = { "ls2621:master" },
+		match = { "ls2621" },
 		tag	= "LTS",
 		screen	= 1
 	},
@@ -345,6 +345,12 @@ globalkeys = awful.util.table.join(
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
               end)
+
+    -- shifty
+    awful.key({modkey}, "t", function() shifty.add({ rel_index = 1 }) end),
+    awful.key({modkey}, "r", shifty.rename),
+    awful.key({modkey}, "w", shifty.del),
+
 )
 
 clientkeys = awful.util.table.join(
