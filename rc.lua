@@ -110,14 +110,44 @@ shifty.config.tags = {
 
 
 shifty.config.apps = {
-    {
-        match = {""},   -- Matches all clients to provide button behaviors.
-        buttons = {
-            button({}, 1, function (c) client.focus = c; c:raise() end),
-            button({modkey}, 1, function (c) awful.mouse.client.move() end),
-            button({modkey}, 3, awful.mouse.client.resize),
-        },
-    },
+	{
+		match = {"chromium"},
+		tag	= "web",
+		screen	= 1
+	},
+	{
+		match = {"Buddy-Liste", "pidgin", "Pidgin" },
+		tag	= "chat",
+		screen	= 1
+	},
+	{
+		match = { "SAPGUI", "CSN" },
+		tag	= "saplogon",
+		screen	= 1
+	},
+	{
+		match = { "Remmina", "remmina" },
+		tag	= "remmina",
+		screen	= 1
+	},
+	{
+		match = { "master:ls2621" },
+		tag	= "LTS",
+		screen	= 1
+	},
+	{
+		match = { "synergys" },
+		tag	= "util",
+		screen	= 1
+	},
+	{
+		match = {""},   -- Matches all clients to provide button behaviors.
+		buttons = {
+			button({}, 1, function (c) client.focus = c; c:raise() end),
+			button({modkey}, 1, function (c) awful.mouse.client.move() end),
+			button({modkey}, 3, awful.mouse.client.resize),
+		},
+	},
 }
 
 shifty.config.defaults = {
