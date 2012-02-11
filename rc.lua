@@ -39,11 +39,93 @@ layouts =
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
-tags = {}
-for s = 1, screen.count() do
+-- tags = {}
+-- for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[2])
-end
+    -- tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[2])
+-- end
+-- }}}
+
+-- {{{ Shifty
+
+shifty.config.tags = {
+	web = {
+		layout	= awful.layout.suit.tile,
+		mwfact	= 0.55,
+		exclusive	= false,
+		position	= 1,
+		init	= true,
+		screen	= 1,
+		spawn	= "chromium"
+	},
+	saplogon = {
+		layout	= awful.layout.suit.tile,
+		mwfact	= 0.5,
+		exclusive	= true,
+		position	= 2,
+		init	= true,
+		screen	= 1,
+		spawn	= "guilogon"
+	},
+	remmina = {
+		layout	= awful.layout.suit.max,
+		mwfact	= 0.5,
+		exclusive	= true,
+		position	= 3,
+		init	= true,
+		screen	= 1,
+		spawn	= "remmina"
+	},
+	LTS = {
+		layout	= awful.layout.suit.tile,
+		mwfact	= 0.5,
+		exclusive	= false,
+		position	= 4,
+		init	= true,
+		screen	= 1,
+		spawn	= terminal .. " -e master\:ls2621"
+	},
+	util = {
+		layout	= awful.layout.suit.tile,
+		mwfact	= 0.5,
+		exclusive	= false,
+		position	= 8,
+		init	= true,
+		screen	= 1,
+		spawn	= terminal .. " -e 'synergys -f' -t synergys"
+	},
+	chat = {
+		layout	= awful.layout.suit.tile,
+		mwfact	= 0.80,
+		exclusive	= false,
+		position	= 9,
+		init	= true,
+		screen	= 1,
+		spawn	= "pidgin"
+	},
+}
+
+
+shifty.config.apps = {
+    {
+        match = {""},   -- Matches all clients to provide button behaviors.
+        buttons = {
+            button({}, 1, function (c) client.focus = c; c:raise() end),
+            button({modkey}, 1, function (c) awful.mouse.client.move() end),
+            button({modkey}, 3, awful.mouse.client.resize),
+        },
+    },
+}
+
+shifty.config.defaults = {
+	layout	= awful.layout.suit.tile,
+	ncol	= 1,
+	mwfact	= 0.5,
+	floatBars	= true,
+	guess_name	= true,
+	guess_position	= true,
+}
+
 -- }}}
 
 -- {{{ Menu
@@ -156,6 +238,11 @@ for s = 1, screen.count() do
         layout = awful.widget.layout.horizontal.rightleft
     }
 end
+-- }}}
+
+-- {{{ shifty init
+shifty.taglist	= mytaglist
+shifty.init()
 -- }}}
 
 -- {{{ Mouse bindings
@@ -346,3 +433,5 @@ end)
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+-- vim: set ai: set tabstop=10:
