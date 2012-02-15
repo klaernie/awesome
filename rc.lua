@@ -69,7 +69,7 @@ shifty.config.tags = {
 	web = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.55,
-		exclusive	= false,
+		exclusive	= true,
 		position	= 1,
 		init	= true,
 		screen	= 1,
@@ -110,12 +110,12 @@ shifty.config.tags = {
 		position	= 8,
 		init	= true,
 		screen	= 1,
-		spawn	= terminal .. " -e 'synergys -f' -t synergys"
+		spawn	= "synS",
 	},
 	chat = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.80,
-		exclusive	= false,
+		exclusive	= true,
 		position	= 9,
 		init	= true,
 		screen	= 1,
@@ -323,7 +323,7 @@ globalkeys = awful.util.table.join(
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
         end),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
+    --awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
