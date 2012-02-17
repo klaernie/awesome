@@ -118,8 +118,13 @@ shifty.config.tags = {
 		exclusive	= true,
 		position	= 9,
 		init	= true,
-		screen	= 1,
+		screen	= math.max(screen.count(), 2),
 		spawn	= "pidgin"
+	},
+	mutt = {
+		layout	= awful.layout.suit.tile,
+		mwfact	= 0.50,
+		exclusive	= true,
 	},
 }
 
@@ -160,6 +165,10 @@ shifty.config.apps = {
 		match = { "synergys" },
 		tag	= "util",
 		screen	= 1
+	},
+	{
+		match = { "mutt" },
+		tag	= "mutt",
 	},
 	{
 		match = {""},   -- Matches all clients to provide button behaviors.
