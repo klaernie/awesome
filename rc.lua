@@ -163,11 +163,15 @@ shifty.config.apps = {
 	},
 	{
 		match = {""},   -- Matches all clients to provide button behaviors.
-		buttons = {
-			button({}, 1, function (c) client.focus = c; c:raise() end),
-			button({modkey}, 1, function (c) awful.mouse.client.move() end),
-			button({modkey}, 3, awful.mouse.client.resize),
-		},
+		buttons = awful.util.table.join(
+		    awful.button({}, 1, function (c) client.focus = c; c:raise() end),
+		    awful.button({modkey}, 1, function(c)
+			client.focus = c
+			c:raise()
+			awful.mouse.client.move(c)
+			end),
+		    awful.button({modkey}, 3, awful.mouse.client.resize)
+		    )
 	},
 }
 
@@ -382,8 +386,6 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
     awful.key({ modkey,           }, "n",
         function (c)
-            -- The client currently has the input focus, so it cannot be
-            -- minimized, since minimized clients can't have the focus.
             c.minimized = true
         end),
     awful.key({ modkey,           }, "m",
@@ -393,100 +395,52 @@ clientkeys = awful.util.table.join(
         end)
 )
 
+--shifty.config.globalkeys = globalkeys
+shifty.config.clientkeys = clientkeys
+shifty.config.modkey	= modkey
+
 
 -- shifty keycode-tag-jumper
-for i=1,9 do
-    globalkeys = awful.util.table.join(
-                        globalkeys,
-                        awful.key({modkey}, i,
-                            function()
-                                awful.tag.viewonly(shifty.getpos(i))
-                            end))
-    globalkeys = awful.util.table.join(
-                        globalkeys,
-                        awful.key({modkey, "Control"}, i,
-                            function ()
-                                local t = shifty.getpos(i)
-                                t.selected = not t.selected
-                            end))
+-- Compute the maximum number of digit we need, limited to 9
+for i = 1, (shifty.config.maxtags or 9) do
     globalkeys = awful.util.table.join(globalkeys,
-                                awful.key({modkey, "Control", "Shift"}, i,
-                function ()
-                    if client.focus then
-                        awful.client.toggletag(shifty.getpos(i))
-                    end
-                end))
-    -- move clients to other tags
-    globalkeys = awful.util.table.join(
-                    globalkeys,
-                    awful.key({modkey, "Shift"}, i,
-                        function ()
-                            if client.focus then
-                                local t = shifty.getpos(i)
-                                awful.client.movetotag(t)
-                                awful.tag.viewonly(t)
-                            end
-                        end))
-end
+        awful.key({modkey}, i, function()
+            local t =  awful.tag.viewonly(shifty.getpos(i))
+            end),
+        awful.key({modkey, "Control"}, i, function()
+            local t = shifty.getpos(i)
+            t.selected = not t.selected
+            end),
+        awful.key({modkey, "Control", "Shift"}, i, function()
+            if client.focus then
+                awful.client.toggletag(shifty.getpos(i))
+            end
+            end),
+        -- move clients to other tags
+        awful.key({modkey, "Shift"}, i, function()
+            if client.focus then
+                t = shifty.getpos(i)
+                awful.client.movetotag(t)
+                awful.tag.viewonly(t)
+            end
+        end))
+    end
 
-
-
-clientbuttons = awful.util.table.join(
-    awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
-    awful.button({ modkey }, 1, awful.mouse.client.move),
-    awful.button({ modkey }, 3, awful.mouse.client.resize))
 
 -- Set keys
 root.keys(globalkeys)
-shifty.config.globalkeys = globalkeys
-shifty.config.clientkeys = clientkeys
--- }}}
 
--- {{{ Rules
-awful.rules.rules = {
-    -- All clients will match this rule.
-    { rule = { },
-      properties = { border_width = beautiful.border_width,
-                     border_color = beautiful.border_normal,
-                     focus = true,
-                     keys = clientkeys,
-                     buttons = clientbuttons } },
-    { rule = { class = "MPlayer" },
-      properties = { floating = true } },
-    { rule = { class = "pinentry" },
-      properties = { floating = true } },
-    { rule = { class = "gimp" },
-      properties = { floating = true } },
-    -- Set Firefox to always map on tags number 2 of screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { tag = tags[1][2] } },
-}
--- }}}
+-- Hook function to execute when focusing a client.
+client.add_signal("focus", function(c)
+    if not awful.client.ismarked(c) then
+        c.border_color = beautiful.border_focus
+    end
+end)
 
--- {{{ Signals
--- Signal function to execute when a new client appears.
-client.add_signal("manage", function (c, startup)
-    -- Add a titlebar
-    -- awful.titlebar.add(c, { modkey = modkey })
-
-    -- Enable sloppy focus
-    c:add_signal("mouse::enter", function(c)
-        if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-            and awful.client.focus.filter(c) then
-            client.focus = c
-        end
-    end)
-
-    if not startup then
-        -- Set the windows at the slave,
-        -- i.e. put it at the end of others instead of setting it master.
-        -- awful.client.setslave(c)
-
-        -- Put windows in a smart way, only if they does not set an initial position.
-        if not c.size_hints.user_position and not c.size_hints.program_position then
-            awful.placement.no_overlap(c)
-            awful.placement.no_offscreen(c)
-        end
+-- Hook function to execute when unfocusing a client.
+client.add_signal("unfocus", function(c)
+    if not awful.client.ismarked(c) then
+        c.border_color = beautiful.border_normal
     end
 end)
 
