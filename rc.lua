@@ -286,7 +286,7 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
-        s == math.max(screen.count(), 2) and mysystray or nil,
+        s == math.max(screen.count(), 1) and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
