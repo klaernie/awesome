@@ -48,16 +48,6 @@ layouts =
     awful.layout.suit.max,
     awful.layout.suit.magnifier
 }
--- }}}
-
--- {{{ Tags
--- Define a tag table which hold all screen tags.
--- tags = {}
--- for s = 1, screen.count() do
-    -- Each screen has its own tag table.
-    -- tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[2])
--- end
--- }}}
 
 -- {{{ Shifty
 
@@ -296,7 +286,7 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
-        s == 1 and mysystray or nil,
+        s == math.max(screen.count(), 2) and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
