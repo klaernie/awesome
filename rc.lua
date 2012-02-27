@@ -110,6 +110,7 @@ shifty.config.tags = {
 	mutt = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.50,
+		position	= 7,
 		exclusive	= true,
 	},
 }
