@@ -59,7 +59,7 @@ shifty.config.tags = {
 		position	= 1,
 		init	= true,
 		screen	= 1,
-		spawn	= "chromium"
+	--	spawn	= "chromium"
 	},
 	saplogon = {
 		layout	= awful.layout.suit.tile,
@@ -68,7 +68,7 @@ shifty.config.tags = {
 		position	= 2,
 		init	= autorunsapdeb,
 		screen	= 1,
-		spawn	= "css"
+	--	spawn	= "css"
 	},
 	remmina = {
 		layout	= awful.layout.suit.max,
@@ -77,7 +77,7 @@ shifty.config.tags = {
 		position	= 3,
 		init	= autorunsapdeb,
 		screen	= 1,
-		spawn	= "remmina"
+	--	spawn	= "remmina"
 	},
 	LTS = {
 		layout	= awful.layout.suit.tile,
@@ -87,7 +87,7 @@ shifty.config.tags = {
 		init	= autorunsapdeb,
 		max_clients	= 4,
 		screen	= 1,
-		spawn	= terminal .. " -e master\:ls2621 -t ls2621:master",
+	--	spawn	= terminal .. " -e master\:ls2621 -t ls2621:master",
 	},
 	util = {
 		layout	= awful.layout.suit.tile,
@@ -96,7 +96,7 @@ shifty.config.tags = {
 		position	= 8,
 		init	= true,
 		screen	= 1,
-		spawn	= "synS",
+	--	spawn	= "synS",
 	},
 	chat = {
 		layout	= awful.layout.suit.tile,
@@ -105,7 +105,7 @@ shifty.config.tags = {
 		position	= 9,
 		init	= true,
 		screen	= math.max(screen.count(), 1),
-		spawn	= "pidgin"
+	--	spawn	= "pidgin"
 	},
 	mutt = {
 		layout	= awful.layout.suit.tile,
