@@ -87,7 +87,9 @@ shifty.config.tags = {
 		init	= autorunsapdeb,
 		max_clients	= 4,
 		screen	= 1,
-	--	spawn	= terminal .. " -e master\:ls2621 -t ls2621:master",
+<<<<<<< HEAD
+	--	spawn	= terminal .. " --window-with-profile ls2621 -e master\:ls2621 -t ls2621:master",
+>>>>>>> 6cbd01dbd9206a6f6d338cf3d1469a232d4a9e2b
 	},
 	util = {
 		layout	= awful.layout.suit.tile,
