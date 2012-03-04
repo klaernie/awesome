@@ -158,6 +158,10 @@ shifty.config.apps = {
 		tag	= "mutt",
 	},
 	{
+		match = { "gnome-terminal" },
+		honorsizehints = false,
+	},
+	{
 		match = {""},   -- Matches all clients to provide button behaviors.
 		buttons = awful.util.table.join(
 		    awful.button({}, 1, function (c) client.focus = c; c:raise() end),
