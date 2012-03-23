@@ -89,6 +89,14 @@ shifty.config.tags = {
 		screen	= 1,
 	--	spawn	= terminal .. " --window-with-profile ls2621 -e master\:ls2621 -t ls2621:master",
 	},
+	citrix = {
+		layout	= awful.layout.suit.max,
+		mwfact	= 0.5,
+		exclusive	= true,
+		position	= 5,
+		init	= autorunsapdeb,
+		screen	= 1,
+	},
 	util = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.5,
@@ -146,6 +154,11 @@ shifty.config.apps = {
 	{
 		match = { "ls2621" },
 		tag	= "LTS",
+		screen	= 1
+	},
+	{
+		match = { "Wfica" },
+		tag	= "citrix",
 		screen	= 1
 	},
 	{
