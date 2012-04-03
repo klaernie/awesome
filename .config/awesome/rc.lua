@@ -120,6 +120,7 @@ shifty.config.tags = {
 		mwfact	= 0.50,
 		position	= 7,
 		exclusive	= true,
+		spawn	= "run-mutt.sh"
 	},
 }
 
