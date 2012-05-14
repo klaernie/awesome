@@ -204,6 +204,12 @@ shifty.config.apps = {
 		skip_taskbar	= true,
 	},
 	{
+		match = { "nm-applet" },
+		intrusive = true,
+		float	= true,
+		skip_taskbar	= false,
+	},
+	{
 		match = { "gnome-keyring-prompt-3" },
 		intrusive = true,
 		float	= true,
