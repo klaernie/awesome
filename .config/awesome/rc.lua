@@ -122,6 +122,20 @@ shifty.config.tags = {
 		exclusive	= true,
 		spawn	= "run-mutt.sh"
 	},
+	wdevdev = {
+		layout	= awful.layout.suit.tile,
+		mwfact	= 0.50,
+		position	= 7,
+		exclusive	= true,
+		spawn	= terminal .. " -t wdev0 -e run-wdev0.sh",
+	},
+	wdevlog = {
+		layout	= awful.layout.suit.tile,
+		mwfact	= 0.50,
+		position	= 7,
+		exclusive	= true,
+		spawn	= terminal .. " -t wdev1 -e run-wdev1.sh",
+	}
 }
 
 
@@ -170,6 +184,14 @@ shifty.config.apps = {
 	{
 		match = { "mutt" },
 		tag	= "mutt",
+	},
+	{
+		match = { "wdev0" },
+		tag	= "wdevdev",
+	},
+	{
+		match = { "wdev1" },
+		tag	= "wdevlog",
 	},
 	{
 		match = { "gnome-terminal" },
