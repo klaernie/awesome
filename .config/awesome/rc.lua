@@ -140,7 +140,8 @@ shifty.config.tags = {
 
 shifty.config.apps = {
 	{
-		match = {"chromium"},
+		match = { "chromium",
+		          "iceweasel" },
 		tag	= "web",
 		screen	= 1
 	},
