@@ -313,6 +313,15 @@ mytasklist.buttons = awful.util.table.join(
                                               if client.focus then client.focus:raise() end
                                           end))
 
+-- make gtk icons brighter via chroma key properties
+xprop = assert(io.popen("xprop -root _NET_SUPPORTING_WM_CHECK"))
+wid = xprop:read():match("^_NET_SUPPORTING_WM_CHECK.WINDOW.: window id # (0x[%S]+)$")
+xprop:close()
+if wid then
+	wid = tonumber(wid) + 1
+	os.execute("xprop -id " .. wid .. " -format _NET_SYSTEM_TRAY_COLORS 32c " ..  "-set _NET_SYSTEM_TRAY_COLORS " ..  "65535,65535,65535,65535,8670,8670,65535,32385,0,8670,65535,8670")
+end
+
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
