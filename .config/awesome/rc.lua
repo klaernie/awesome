@@ -213,6 +213,14 @@ shifty.config.apps = {
 		skip_taskbar	= false,
 	},
 	{
+		match = { "jd-Main" },
+		tag   =  "JDownloader",
+	},
+	{
+		match = { "JDownloader" },
+		tag   =  "JDownloader",
+	},
+	{
 		match = { "gnome-keyring-prompt-3" },
 		intrusive = true,
 		float	= true,
