@@ -193,6 +193,10 @@ shifty.config.apps = {
 		tag	= "wdevlog",
 	},
 	{
+		match = { "urxvt" },
+		honorsizehints = false,
+	},
+	{
 		match = { "gnome-terminal" },
 		honorsizehints = false,
 	},
