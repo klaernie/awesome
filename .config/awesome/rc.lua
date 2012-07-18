@@ -146,15 +146,14 @@ shifty.config.apps = {
 		screen	= 1
 	},
 	{
-		match = {"Buddy-Liste"},
+		match = { role = { "buddy_list", } },
 		tag	= "chat",
 		slave	= true,
-		screen	= 1
 	},
 	{
-		match = {"pidgin", "Pidgin" },
+		match = { role = { "conversation", } },
 		tag	= "chat",
-		screen	= 1
+		slave	= false,
 	},
 	{
 		match = { "SAPGUI", "CSN", "com-sap-platin-Gui" },
