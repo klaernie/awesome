@@ -140,20 +140,20 @@ shifty.config.tags = {
 
 shifty.config.apps = {
 	{
-		match = {"chromium"},
+		match = { "chromium",
+		          "iceweasel" },
 		tag	= "web",
 		screen	= 1
 	},
 	{
-		match = {"Buddy-Liste"},
+		match = { role = { "buddy_list", } },
 		tag	= "chat",
 		slave	= true,
-		screen	= 1
 	},
 	{
-		match = {"pidgin", "Pidgin" },
+		match = { role = { "conversation", } },
 		tag	= "chat",
-		screen	= 1
+		slave	= false,
 	},
 	{
 		match = { "SAPGUI", "CSN", "com-sap-platin-Gui" },
@@ -324,6 +324,15 @@ mytasklist.buttons = awful.util.table.join(
                                               awful.client.focus.byidx(-1)
                                               if client.focus then client.focus:raise() end
                                           end))
+
+-- make gtk icons brighter via chroma key properties
+xprop = assert(io.popen("xprop -root _NET_SUPPORTING_WM_CHECK"))
+wid = xprop:read():match("^_NET_SUPPORTING_WM_CHECK.WINDOW.: window id # (0x[%S]+)$")
+xprop:close()
+if wid then
+	wid = tonumber(wid) + 1
+	os.execute("xprop -id " .. wid .. " -format _NET_SYSTEM_TRAY_COLORS 32c " ..  "-set _NET_SYSTEM_TRAY_COLORS " ..  "65535,65535,65535,65535,8670,8670,65535,32385,0,8670,65535,8670")
+end
 
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
