@@ -113,8 +113,8 @@ shifty.config.tags = {
 	--	spawn	= "synS",
 	},
 	chat = {
-		layout	= awful.layout.suit.tile,
-		mwfact	= 0.80,
+		layout	= awful.layout.suit.tile.left,
+		mwfact	= 0.20,
 		exclusive	= true,
 		position	= 9,
 		init	= true,
@@ -155,12 +155,18 @@ shifty.config.apps = {
 	{
 		match = { role = { "buddy_list", } },
 		tag	= "chat",
-		slave	= true,
+		slave	= false,
 	},
 	{
-		match = { role = { "conversation", } },
+		match = { role = { "conversation", "log_viewer", }, },
 		tag	= "chat",
-		slave	= false,
+		slave	= true,
+		float	= false,
+	},
+	{
+		match = { class = { "Pidgin", }, },
+		tag	= "chat",
+		border_width = 0,
 	},
 	{
 		match = { "SAPGUI", "CSN", "com-sap-platin-Gui" },
