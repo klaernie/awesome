@@ -184,9 +184,9 @@ shifty.config.apps = {
 		screen	= 1
 	},
 	{
-		match = { "Wfica" },
+		match = { class = { "Wfica", }, },
 		tag	= "citrix",
-		screen	= 1
+		honorsizehints = false,
 	},
 	{
 		match = { "synergys" },
