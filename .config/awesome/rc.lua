@@ -128,6 +128,10 @@ shifty.config.tags = {
 		exclusive	= true,
 		spawn	= "run-mutt.sh"
 	},
+	mutt = {
+		layout  = awful.layout.suit.tile,
+		exclusive	= true,
+	},
 	wdevdev = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.50,
@@ -232,6 +236,10 @@ shifty.config.apps = {
 	{
 		match = { "JDownloader" },
 		tag   =  "JDownloader",
+	},
+	{
+		match = { "Cube 2: Sauerbraten" },
+		tag   = "sauerbraten",
 	},
 	{
 		match = { "gnome-keyring-prompt-3" },
