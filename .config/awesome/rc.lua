@@ -128,8 +128,8 @@ shifty.config.tags = {
 		exclusive	= true,
 		spawn	= "run-mutt.sh"
 	},
-	mutt = {
-		layout  = awful.layout.suit.tile,
+	sauerbraten = {
+		layout  = awful.layout.suit.max,
 		exclusive	= true,
 	},
 	wdevdev = {
