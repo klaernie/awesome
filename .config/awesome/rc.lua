@@ -410,6 +410,8 @@ root.buttons(awful.util.table.join(
 globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
+    awful.key({ modkey, "Shift"   }, "Left",   shifty.send_prev), -- client to prev tag
+    awful.key({ modkey, "Shift"   }, "Right",  shifty.send_next), -- client to next tag
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 
     awful.key({ modkey,           }, "j",
