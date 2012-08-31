@@ -7,6 +7,9 @@ require("beautiful")
 -- Notification library
 require("naughty")
 
+-- Vicious widgets
+vicious = require("vicious")
+
 -- shifty
 require("shifty")
 
