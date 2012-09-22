@@ -7,6 +7,9 @@ require("beautiful")
 -- Notification library
 require("naughty")
 
+require("widget_fun")
+local widget_fun = widget_fun
+
 -- Vicious widgets
 vicious = require("vicious")
 
@@ -391,10 +394,10 @@ for s = 1, screen.count() do
             mypromptbox[s],
             layout = awful.widget.layout.horizontal.leftright
         },
-	batterywidget,
         mylayoutbox[s],
         mytextclock,
         s == math.max(screen.count(), 1) and mysystray or nil,
+	batterywidget,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
