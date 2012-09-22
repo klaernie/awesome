@@ -7,6 +7,9 @@ require("beautiful")
 -- Notification library
 require("naughty")
 
+-- Vicious widgets
+vicious = require("vicious")
+
 -- shifty
 require("shifty")
 
@@ -128,6 +131,10 @@ shifty.config.tags = {
 		exclusive	= true,
 		spawn	= "run-mutt.sh"
 	},
+	sauerbraten = {
+		layout  = awful.layout.suit.max,
+		exclusive	= true,
+	},
 	wdevdev = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.50,
@@ -232,6 +239,10 @@ shifty.config.apps = {
 	{
 		match = { "JDownloader" },
 		tag   =  "JDownloader",
+	},
+	{
+		match = { "Cube 2: Sauerbraten" },
+		tag   = "sauerbraten",
 	},
 	{
 		match = { "gnome-keyring-prompt-3" },
@@ -407,6 +418,8 @@ root.buttons(awful.util.table.join(
 globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
+    awful.key({ modkey, "Shift"   }, "Left",   shifty.send_prev), -- client to prev tag
+    awful.key({ modkey, "Shift"   }, "Right",  shifty.send_next), -- client to next tag
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 
     awful.key({ modkey,           }, "j",
