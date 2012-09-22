@@ -291,6 +291,10 @@ mytextclock = awful.widget.textclock({ align = "right" }, " %a %b %d, %H:%M:%S "
 -- Create a systray
 mysystray = widget({ type = "systray" })
 
+-- battery widget
+batterywidget = widget({type = "textbox", name = "batterywidget"})
+vicious.register(batterywidget, vicious.widgets.bat, widget_fun.batclosure(), 31, "BAT0")
+
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -376,6 +380,7 @@ for s = 1, screen.count() do
             mypromptbox[s],
             layout = awful.widget.layout.horizontal.leftright
         },
+	batterywidget,
         mylayoutbox[s],
         mytextclock,
         s == math.max(screen.count(), 1) and mysystray or nil,
