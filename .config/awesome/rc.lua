@@ -500,6 +500,15 @@ globalkeys = awful.util.table.join(
 					      end),
 
     -- shifty
+    awful.key({modkey, "Control"}, "n",
+              function()
+                  local t = awful.tag.selected()
+                  local s = awful.util.cycle(screen.count(), t.screen + 1)
+                  awful.tag.history.restore()
+                  t = shifty.tagtoscr(s, t)
+                  awful.tag.viewonly(t)
+              end),
+
     awful.key({modkey}, "t", function() shifty.add({ rel_index = 1 }) end),
     awful.key({modkey}, "c", shifty.rename),
     awful.key({modkey}, "w", shifty.del)
