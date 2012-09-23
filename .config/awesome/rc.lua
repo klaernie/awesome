@@ -132,7 +132,8 @@ shifty.config.tags = {
 		exclusive	= true,
 		position	= 9,
 		init	= true,
-		screen	= math.max(screen.count(), 1),
+		screen	= ( autorunsapdeb and 1 or math.max(screen.count(),1) ),
+		--screen	= math.max(screen.count(), 1),
 	--	spawn	= "pidgin"
 	},
 	mutt = {
