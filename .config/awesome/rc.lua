@@ -109,6 +109,14 @@ shifty.config.tags = {
 		init	= autorunsapdeb,
 		screen	= 1,
 	},
+	virtualbox = {
+		layout	= awful.layout.suit.max,
+		mwfact	= 0.5,
+		exclusive	= true,
+		position	= 6,
+		init	= autorunsapdeb,
+		screen	= ( autorunsapdeb and math.max(screen.count(),1) or 1),
+	},
 	util = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.5,
@@ -246,6 +254,11 @@ shifty.config.apps = {
 	{
 		match = { "Cube 2: Sauerbraten" },
 		tag   = "sauerbraten",
+	},
+	{
+		match = { class = { "VirtualBox", } ,
+			  name  = { "SAP-Windows", } , },
+		tag   = "virtualbox",
 	},
 	{
 		match = { "gnome-keyring-prompt-3" },
