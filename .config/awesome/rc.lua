@@ -195,7 +195,8 @@ shifty.config.apps = {
 	{
 		match = { "Remmina", "remmina" },
 		tag	= "remmina",
-		screen	= 1
+		screen	= 1,
+		border_width  = 0,
 	},
 	{
 		match = { "ls2621" },
