@@ -43,10 +43,11 @@ function batclosure ()
             if charge <= nextlim then
                 naughty.notify({title = "⚡ Warning! ⚡",
                                 text = "Battery has reached critial level ( ⚡ "..charge.."%)!",
+                                icon = "/usr/share/icons/gnome/48x48/status/battery-caution.png",
                                 timeout = 7,
                                 position = "bottom_right",
                                 fg = beautiful.fg_focus,
-                                bg = beautiful.bg_focus
+                                bg = "#FF0000",
                                })
                 nextlim = getnextlim(charge)
             end
