@@ -38,9 +38,13 @@ naughty.notify ( { text = "awesome running on " .. hostname } )
 
 if hostname == "sapdeb2" then
   autorunsapdeb = true
+  systrayscreen = 1
 else
   autorunsapdeb = false
+  systrayscreen = math.max(screen.count(), 1)
 end
+
+
 
 -- Default modkey.
 modkey = "Mod4"
@@ -411,7 +415,7 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
-        s == math.max(screen.count(), 1) and mysystray or nil,
+        s == systrayscreen and mysystray or nil,
 	batterywidget,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
