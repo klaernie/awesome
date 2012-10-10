@@ -171,9 +171,14 @@ shifty.config.tags = {
 shifty.config.apps = {
 	{
 		match = { "chromium",
-		          "iceweasel" },
+		          "iceweasel", },
 		tag	= "web",
 		screen	= 1
+	},
+	{
+		match = { "exe", },
+		tag	= "flash",
+		float	= true,
 	},
 	{
 		match = { role = { "buddy_list", } },
