@@ -121,14 +121,20 @@ shifty.config.tags = {
 		init	= autorunsapdeb,
 		screen	= ( autorunsapdeb and math.max(screen.count(),1) or 1),
 	},
-	util = {
+	mutt = {
 		layout	= awful.layout.suit.tile,
-		mwfact	= 0.5,
-		exclusive	= false,
+		mwfact	= 0.50,
+		position	= 7,
+		exclusive	= true,
+		spawn	= "run-mutt.sh"
+	},
+	irssi = {
+		layout	= awful.layout.suit.tile,
+		mwfact	= 0.50,
 		position	= 8,
-		init	= true,
-		screen	= 1,
-	--	spawn	= "synS",
+		exclusive	= true,
+		spawn	= "run-irssi.sh",
+		screen	= ( autorunsapdeb and 1 or math.max(screen.count(),1) ),
 	},
 	chat = {
 		layout	= awful.layout.suit.tile.left,
@@ -137,15 +143,16 @@ shifty.config.tags = {
 		position	= 9,
 		init	= true,
 		screen	= ( autorunsapdeb and 1 or math.max(screen.count(),1) ),
-		--screen	= math.max(screen.count(), 1),
 	--	spawn	= "pidgin"
 	},
-	mutt = {
+	util = {
 		layout	= awful.layout.suit.tile,
-		mwfact	= 0.50,
-		position	= 7,
-		exclusive	= true,
-		spawn	= "run-mutt.sh"
+		mwfact	= 0.5,
+		exclusive	= false,
+		position	= 10,
+		init	= true,
+		screen	= 1,
+	--	spawn	= "synS",
 	},
 	sauerbraten = {
 		layout  = awful.layout.suit.max,
@@ -225,6 +232,10 @@ shifty.config.apps = {
 	{
 		match = { "mutt" },
 		tag	= "mutt",
+	},
+	{
+		match = { "irssi" },
+		tag	= "irssi",
 	},
 	{
 		match = { "wdev0" },
