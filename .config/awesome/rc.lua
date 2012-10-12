@@ -110,7 +110,7 @@ shifty.config.tags = {
 		mwfact	= 0.5,
 		exclusive	= true,
 		position	= 5,
-		init	= autorunsapdeb,
+		--init	= autorunsapdeb,
 		screen	= 1,
 	},
 	virtualbox = {
