@@ -171,6 +171,9 @@ shifty.config.tags = {
 		position	= 7,
 		exclusive	= true,
 		spawn	= terminal .. " -t wdev1 -e run-wdev1.sh",
+	},
+	vlc	= {
+		exclusive	= true,
 	}
 }
 
@@ -244,6 +247,11 @@ shifty.config.apps = {
 	{
 		match = { "wdev1" },
 		tag	= "wdevlog",
+	},
+	{
+		match = { "vlc", },
+		tag	= "vlc",
+		border_width	= 0,
 	},
 	{
 		match = { "urxvt" },
