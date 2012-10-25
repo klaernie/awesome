@@ -80,7 +80,7 @@ local hostname = f:read("*all")
 f:close()
 hostname = string.gsub(hostname, '[\n\r]+', '')
 
-theme.wallpaper_cmd = { "awsetbg -c " .. awful.util.getdir("config") .. "/bg/bg-" .. hostname .. ".jpg" }
+theme.wallpaper_cmd = { "sleep 2; awsetbg -c " .. awful.util.getdir("config") .. "/bg/bg-" .. hostname .. ".jpg" }
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = "/usr/share/awesome/themes/default/layouts/fairhw.png"
