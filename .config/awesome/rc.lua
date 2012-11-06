@@ -76,7 +76,6 @@ shifty.config.tags = {
 		position	= 1,
 		init	= true,
 		screen	= 1,
-	--	spawn	= "chromium"
 	},
 	["saplogon"] = {
 		layout	= awful.layout.suit.tile,
@@ -85,7 +84,6 @@ shifty.config.tags = {
 		position	= 2,
 		init	= autorunsapdeb,
 		screen	= 1,
-	--	spawn	= "css"
 	},
 	["remmina"] = {
 		layout	= awful.layout.suit.max,
@@ -94,7 +92,6 @@ shifty.config.tags = {
 		position	= 3,
 		init	= autorunsapdeb,
 		screen	= 1,
-	--	spawn	= "remmina"
 	},
 	["LTS"] = {
 		layout	= awful.layout.suit.tile,
@@ -103,14 +100,12 @@ shifty.config.tags = {
 		position	= 4,
 		init	= autorunsapdeb,
 		screen	= 1,
-	--	spawn	= terminal .. " --window-with-profile ls2621 -e master\:ls2621 -t ls2621:master",
 	},
 	["citrix"] = {
 		layout	= awful.layout.suit.max,
 		mwfact	= 0.5,
 		exclusive	= true,
 		position	= 5,
-		--init	= autorunsapdeb,
 		screen	= 1,
 	},
 	["virtualbox"] = {
@@ -143,7 +138,6 @@ shifty.config.tags = {
 		position	= 9,
 		init	= true,
 		screen	= ( autorunsapdeb and 1 or math.max(screen.count(),1) ),
-	--	spawn	= "pidgin"
 	},
 	["util"] = {
 		layout	= awful.layout.suit.tile,
@@ -152,7 +146,6 @@ shifty.config.tags = {
 		position	= 10,
 		init	= true,
 		screen	= 1,
-	--	spawn	= "synS",
 	},
 	["sauerbraten"] = {
 		layout  = awful.layout.suit.max,
