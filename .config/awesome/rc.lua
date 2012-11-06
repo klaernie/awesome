@@ -69,7 +69,7 @@ layouts =
 -- {{{ Shifty
 
 shifty.config.tags = {
-	web = {
+	["web"] = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.55,
 		exclusive	= true,
@@ -78,7 +78,7 @@ shifty.config.tags = {
 		screen	= 1,
 	--	spawn	= "chromium"
 	},
-	saplogon = {
+	["saplogon"] = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.5,
 		exclusive	= true,
@@ -87,7 +87,7 @@ shifty.config.tags = {
 		screen	= 1,
 	--	spawn	= "css"
 	},
-	remmina = {
+	["remmina"] = {
 		layout	= awful.layout.suit.max,
 		mwfact	= 0.5,
 		exclusive	= true,
@@ -96,7 +96,7 @@ shifty.config.tags = {
 		screen	= 1,
 	--	spawn	= "remmina"
 	},
-	LTS = {
+	["LTS"] = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.5,
 		exclusive	= false,
@@ -105,7 +105,7 @@ shifty.config.tags = {
 		screen	= 1,
 	--	spawn	= terminal .. " --window-with-profile ls2621 -e master\:ls2621 -t ls2621:master",
 	},
-	citrix = {
+	["citrix"] = {
 		layout	= awful.layout.suit.max,
 		mwfact	= 0.5,
 		exclusive	= true,
@@ -113,7 +113,7 @@ shifty.config.tags = {
 		--init	= autorunsapdeb,
 		screen	= 1,
 	},
-	virtualbox = {
+	["virtualbox"] = {
 		layout	= awful.layout.suit.max,
 		mwfact	= 0.5,
 		exclusive	= true,
@@ -121,14 +121,14 @@ shifty.config.tags = {
 		init	= autorunsapdeb,
 		screen	= ( autorunsapdeb and math.max(screen.count(),1) or 1),
 	},
-	mutt = {
+	["mutt"] = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.50,
 		position	= 7,
 		exclusive	= true,
 		spawn	= "run-mutt.sh"
 	},
-	irssi = {
+	["irssi"] = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.50,
 		position	= 8,
@@ -136,7 +136,7 @@ shifty.config.tags = {
 		spawn	= "run-irssi.sh",
 		screen	= ( autorunsapdeb and 1 or math.max(screen.count(),1) ),
 	},
-	chat = {
+	["chat"] = {
 		layout	= awful.layout.suit.tile.left,
 		mwfact	= 0.20,
 		exclusive	= true,
@@ -145,7 +145,7 @@ shifty.config.tags = {
 		screen	= ( autorunsapdeb and 1 or math.max(screen.count(),1) ),
 	--	spawn	= "pidgin"
 	},
-	util = {
+	["util"] = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.5,
 		exclusive	= false,
@@ -154,25 +154,25 @@ shifty.config.tags = {
 		screen	= 1,
 	--	spawn	= "synS",
 	},
-	sauerbraten = {
+	["sauerbraten"] = {
 		layout  = awful.layout.suit.max,
 		exclusive	= true,
 	},
-	wdevdev = {
+	["wdevdev"] = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.50,
 		position	= 7,
 		exclusive	= true,
 		spawn	= terminal .. " -t wdev0 -e run-wdev0.sh",
 	},
-	wdevlog = {
+	["wdevlog"] = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.50,
 		position	= 7,
 		exclusive	= true,
 		spawn	= terminal .. " -t wdev1 -e run-wdev1.sh",
 	},
-	vlc	= {
+	["vlc"]	= {
 		exclusive	= true,
 	}
 }
