@@ -39,6 +39,7 @@ naughty.notify ( { text = "awesome running on " .. hostname } )
 if hostname == "sapdeb2" then
   autorunsapdeb = true
   systrayscreen = 1
+  awful.util.spawn( os.getenv("HOME") .. "/bin/enable-DP2.sh" )
 else
   autorunsapdeb = false
   systrayscreen = math.max(screen.count(), 1)
