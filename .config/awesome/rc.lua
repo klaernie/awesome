@@ -39,10 +39,18 @@ naughty.notify ( { text = "awesome running on " .. hostname } )
 if hostname == "sapdeb2" then
   autorunsapdeb = true
   systrayscreen = 1
+  primaryscreen = 0
+  auxscreen	= 0
   awful.util.spawn( os.getenv("HOME") .. "/bin/enable-DP4.sh" )
+elseif hostname == "mainframe" and screen.count() == 3 then
+  systrayscreen = 3
+  primaryscreen = 2
+  auxscreen	= 1
 else
   autorunsapdeb = false
   systrayscreen = math.max(screen.count(), 1)
+  primaryscreen = 1
+  auxscreen	= 1
 end
 
 
@@ -76,7 +84,7 @@ shifty.config.tags = {
 		exclusive	= true,
 		position	= 1,
 		init	= true,
-		screen	= 1,
+		screen	= primaryscreen,
 	},
 	["saplogon"] = {
 		layout	= awful.layout.suit.tile,
@@ -84,7 +92,7 @@ shifty.config.tags = {
 		exclusive	= true,
 		position	= 2,
 		init	= autorunsapdeb,
-		screen	= 1,
+		screen	= primaryscreen,
 	},
 	["remmina"] = {
 		layout	= awful.layout.suit.max,
@@ -92,7 +100,7 @@ shifty.config.tags = {
 		exclusive	= true,
 		position	= 3,
 		init	= autorunsapdeb,
-		screen	= 1,
+		screen	= primaryscreen,
 	},
 	["LTS"] = {
 		layout	= awful.layout.suit.tile,
@@ -100,14 +108,14 @@ shifty.config.tags = {
 		exclusive	= false,
 		position	= 4,
 		init	= autorunsapdeb,
-		screen	= 1,
+		screen	= primaryscreen,
 	},
 	["citrix"] = {
 		layout	= awful.layout.suit.max,
 		mwfact	= 0.5,
 		exclusive	= true,
 		position	= 5,
-		screen	= 1,
+		screen	= primaryscreen,
 	},
 	["virtualbox"] = {
 		layout	= awful.layout.suit.max,
@@ -168,6 +176,7 @@ shifty.config.tags = {
 	},
 	["vlc"]	= {
 		exclusive	= true,
+		screen 	= auxscreen
 	}
 }
 
@@ -177,7 +186,6 @@ shifty.config.apps = {
 		match = { "chromium",
 		          "iceweasel", },
 		tag	= "web",
-		screen	= 1
 	},
 	{
 		match = { "exe", },
@@ -203,18 +211,15 @@ shifty.config.apps = {
 	{
 		match = { "SAPGUI", "CSN", "com-sap-platin-Gui", },
 		tag	= "saplogon",
-		screen	= 1
 	},
 	{
 		match = { "Remmina", "remmina" },
 		tag	= "remmina",
-		screen	= 1,
 		border_width  = 0,
 	},
 	{
 		match = { "ls2621" },
 		tag	= "LTS",
-		screen	= 1
 	},
 	{
 		match = { class = { "Wfica", }, },
@@ -224,7 +229,6 @@ shifty.config.apps = {
 	{
 		match = { "synergys" },
 		tag	= "util",
-		screen	= 1
 	},
 	{
 		match = { "mutt" },
