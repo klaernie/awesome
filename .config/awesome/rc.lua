@@ -146,7 +146,7 @@ shifty.config.tags = {
 		exclusive	= false,
 		position	= 10,
 		init	= true,
-		screen	= 1,
+		screen	= systrayscreen,
 	},
 	["sauerbraten"] = {
 		layout  = awful.layout.suit.max,
