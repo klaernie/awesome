@@ -153,7 +153,7 @@ shifty.config.tags = {
 		mwfact	= 0.5,
 		exclusive	= false,
 		position	= 10,
-		init	= ( hostname == "mainframe" ) ,
+		init	= ( auxscreen ~= systrayscreen ) ,
 		screen	= auxscreen,
 	},
 	["util"] = {
