@@ -148,6 +148,14 @@ shifty.config.tags = {
 		init	= true,
 		screen	= ( autorunsapdeb and 1 or math.max(screen.count(),1) ),
 	},
+	["misc"] = {
+		layout	= awful.layout.suit.tile,
+		mwfact	= 0.5,
+		exclusive	= false,
+		position	= 10,
+		init	= ( hostname == "mainframe" ) ,
+		screen	= auxscreen,
+	},
 	["util"] = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.5,
