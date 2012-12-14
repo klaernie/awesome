@@ -39,8 +39,8 @@ naughty.notify ( { text = "awesome running on " .. hostname } )
 if hostname == "sapdeb2" then
   autorunsapdeb = true
   systrayscreen = 1
-  primaryscreen = 0
-  auxscreen	= 0
+  primaryscreen = 1
+  auxscreen	= 1
   awful.util.spawn( os.getenv("HOME") .. "/bin/enable-DP4.sh" )
 elseif hostname == "mainframe" and screen.count() == 3 then
   systrayscreen = 3
