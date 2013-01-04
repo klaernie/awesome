@@ -209,6 +209,7 @@ shifty.config.apps = {
 		match = { role = { "buddy_list", } },
 		tag	= "chat",
 		slave	= false,
+		float   = false,
 	},
 	{
 		match = { role = { "conversation", "log_viewer", }, },
