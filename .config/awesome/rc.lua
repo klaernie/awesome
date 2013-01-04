@@ -168,6 +168,11 @@ shifty.config.tags = {
 		layout  = awful.layout.suit.max,
 		exclusive	= true,
 	},
+	["spotify"] = {
+		layout  = awful.layout.suit.max,
+		exclusive	= true,
+		screen  = auxscreen,
+	},
 	["wdevdev"] = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.50,
@@ -295,6 +300,12 @@ shifty.config.apps = {
 		match = { class = { "VirtualBox", } ,
 			  name  = { "SAP-Windows", } , },
 		tag   = "virtualbox",
+	},
+	{
+		match = { "spotify" },
+		tag   = "spotify",
+		float = false,
+		border_width = 0,
 	},
 	{
 		match = { "gnome-keyring-prompt-3" },
