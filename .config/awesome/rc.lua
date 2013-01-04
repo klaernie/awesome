@@ -153,7 +153,7 @@ shifty.config.tags = {
 		mwfact	= 0.5,
 		exclusive	= false,
 		position	= 10,
-		init	= ( auxscreen ~= systrayscreen ) ,
+		init	= ( auxscreen ~= systrayscreen ) and ( screen.count() >= 3 ) ,
 		screen	= auxscreen,
 	},
 	["util"] = {
