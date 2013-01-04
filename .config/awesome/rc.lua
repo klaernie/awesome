@@ -40,7 +40,7 @@ if hostname == "sapdeb2" then
   autorunsapdeb = true
   systrayscreen = 1
   primaryscreen = 1
-  auxscreen	= 1
+  auxscreen	= math.max(screen.count(),1) ,
   awful.util.spawn( os.getenv("HOME") .. "/bin/enable-DP4.sh" )
 elseif hostname == "mainframe" and screen.count() == 3 then
   systrayscreen = 2
@@ -123,7 +123,7 @@ shifty.config.tags = {
 		exclusive	= true,
 		position	= 6,
 		init	= autorunsapdeb,
-		screen	= ( autorunsapdeb and math.max(screen.count(),1) or 1),
+		screen	= auxscreen,
 	},
 	["mutt"] = {
 		layout	= awful.layout.suit.tile,
