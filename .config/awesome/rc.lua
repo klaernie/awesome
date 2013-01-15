@@ -554,6 +554,7 @@ globalkeys = awful.util.table.join(
                   awful.tag.history.restore()
                   t = shifty.tagtoscr(s, t)
                   awful.tag.viewonly(t)
+                  awful.screen.focus_relative( 1)
               end),
 
     awful.key({modkey}, "t", function() shifty.add({ rel_index = 1 }) end),
