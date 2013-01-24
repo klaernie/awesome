@@ -240,6 +240,12 @@ shifty.config.apps = {
 		border_width  = 0,
 	},
 	{
+		match = { "rdesktop" },
+		tag     = "remmina",
+		float	= false,
+		border_width  = 0,
+	},
+	{
 		match = { "ls2621" },
 		tag	= "LTS",
 	},
