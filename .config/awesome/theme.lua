@@ -74,13 +74,7 @@ theme.titlebar_maximized_button_normal_active = "/usr/share/awesome/themes/defau
 theme.titlebar_maximized_button_focus_active  = "/usr/share/awesome/themes/default/titlebar/maximized_focus_active.png"
 
 -- You can use your own command to set your wallpaper
-local io = { popen = io.popen }
-local f = io.popen("hostname")
-local hostname = f:read("*all")
-f:close()
-hostname = string.gsub(hostname, '[\n\r]+', '')
-
-theme.wallpaper_cmd = { "sleep 2; awsetbg -c " .. awful.util.getdir("config") .. "/bg/bg-" .. hostname .. ".jpg" }
+theme.wallpaper_cmd = { "/bin/sh -c \"" .. "sleep 2; feh --bg-center " .. awful.util.getdir("config") .. "/bg/bg-" .. os.getenv("HOSTNAME") .. "\"" }
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = "/usr/share/awesome/themes/default/layouts/fairhw.png"

@@ -28,12 +28,8 @@ terminal = "x-terminal-emulator"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
--- Determine hostname (stolen from https://github.com/xtaran )
-local io = { popen = io.popen }
-local f = io.popen("hostname")
-local hostname = f:read("*all")
-f:close()
-hostname = string.gsub(hostname, '[\n\r]+', '')
+-- determine hostname from environment variable - remember to export it explicitly in ~/.Xsession
+hostname = os.getenv("HOSTNAME")
 naughty.notify ( { text = "awesome running on " .. hostname } )
 
 if hostname == "sapdeb2" then
@@ -53,6 +49,18 @@ else
   auxscreen	= 1
 end
 
+-- write out workarea hints for every screen
+local wa_primary = io.open(awful.util.getdir("cache").."workarea"..hostname..".primary", "w")
+wa_primary:write(screen[primaryscreen].workarea["width"].."x"..screen[primaryscreen].workarea["height"])
+wa_primary:close()
+
+local wa_systray = io.open(awful.util.getdir("cache").."workarea"..hostname..".systray", "w")
+wa_systray:write(screen[systrayscreen].workarea["width"].."x"..screen[systrayscreen].workarea["height"])
+wa_systray:close()
+
+local wa_aux = io.open(awful.util.getdir("cache").."workarea"..hostname..".aux", "w")
+wa_aux:write(screen[auxscreen].workarea["width"].."x"..screen[auxscreen].workarea["height"])
+wa_aux:close()
 
 
 -- Default modkey.
