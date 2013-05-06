@@ -99,7 +99,7 @@ shifty.config.tags = {
 		mwfact	= 0.5,
 		exclusive	= true,
 		position	= 2,
-		init	= autorunsapdeb,
+		init	= false,
 		screen	= primaryscreen,
 	},
 	["remmina"] = {
@@ -231,7 +231,7 @@ shifty.config.apps = {
 		border_width = 0,
 	},
 	{
-		match = { "SAPGUI", "CSN", "com-sap-platin-Gui", },
+		match = { "SAPGUI", "CSN", "CSR", "com-sap-platin-Gui", "SAP GUI for Java", },
 		tag	= "saplogon",
 	},
 	{
