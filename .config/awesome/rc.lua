@@ -195,6 +195,10 @@ shifty.config.tags = {
 		exclusive	= true,
 		spawn	= terminal .. " -t wdev1 -e run-wdev1.sh",
 	},
+	["steam"] = {
+		layout	= awful.layout.suit.max,
+		exclusive	= true,
+	},
 	["vlc"]	= {
 		exclusive	= true,
 		screen 	= auxscreen
@@ -327,6 +331,12 @@ shifty.config.apps = {
 		intrusive = true,
 		float	= true,
 		skip_taskbar	= true,
+	},
+	{
+		match = { "hl2_linux" },
+		tag	= "steam",
+		border_width = 0,
+		float	= false,
 	},
 	{
 		match = {""},   -- Matches all clients to provide button behaviors.
