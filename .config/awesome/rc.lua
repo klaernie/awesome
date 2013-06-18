@@ -99,7 +99,7 @@ shifty.config.tags = {
 		mwfact	= 0.5,
 		exclusive	= true,
 		position	= 2,
-		init	= autorunsapdeb,
+		init	= false,
 		screen	= primaryscreen,
 	},
 	["remmina"] = {
@@ -181,20 +181,6 @@ shifty.config.tags = {
 		exclusive	= true,
 		screen  = auxscreen,
 	},
-	["wdevdev"] = {
-		layout	= awful.layout.suit.tile,
-		mwfact	= 0.50,
-		position	= 7,
-		exclusive	= true,
-		spawn	= terminal .. " -t wdev0 -e run-wdev0.sh",
-	},
-	["wdevlog"] = {
-		layout	= awful.layout.suit.tile,
-		mwfact	= 0.50,
-		position	= 7,
-		exclusive	= true,
-		spawn	= terminal .. " -t wdev1 -e run-wdev1.sh",
-	},
 	["steam"] = {
 		layout	= awful.layout.suit.max,
 		exclusive	= true,
@@ -236,7 +222,7 @@ shifty.config.apps = {
 		border_width = 0,
 	},
 	{
-		match = { "SAPGUI", "CSN", "com-sap-platin-Gui", },
+		match = { "SAPGUI", "CSN", "CSR", "com-sap-platin-Gui", "SAP GUI for Java", },
 		tag	= "saplogon",
 	},
 	{
@@ -270,14 +256,6 @@ shifty.config.apps = {
 	{
 		match = { "irssi" },
 		tag	= "irssi",
-	},
-	{
-		match = { "wdev0" },
-		tag	= "wdevdev",
-	},
-	{
-		match = { "wdev1" },
-		tag	= "wdevlog",
 	},
 	{
 		match = { "vlc", },
