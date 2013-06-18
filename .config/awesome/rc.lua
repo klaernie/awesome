@@ -40,8 +40,8 @@ if hostname == "sapdeb2" then
   awful.util.spawn( os.getenv("HOME") .. "/bin/enable-DP4.sh" )
 elseif hostname == "mainframe" and screen.count() == 3 then
   systrayscreen = 2
-  primaryscreen = 3
-  auxscreen	= 1
+  primaryscreen = 1
+  auxscreen	= 3
 else
   autorunsapdeb = false
   systrayscreen = math.max(screen.count(), 1)
