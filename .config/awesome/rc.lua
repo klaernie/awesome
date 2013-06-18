@@ -198,6 +198,7 @@ shifty.config.tags = {
 	["steam"] = {
 		layout	= awful.layout.suit.max,
 		exclusive	= true,
+		screen	= primaryscreen,
 	},
 	["vlc"]	= {
 		exclusive	= true,
@@ -333,7 +334,7 @@ shifty.config.apps = {
 		skip_taskbar	= true,
 	},
 	{
-		match = { "hl2_linux" },
+		match = { "hl2_linux", "Steam", "steam" },
 		tag	= "steam",
 		border_width = 0,
 		float	= false,
