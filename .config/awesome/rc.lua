@@ -182,6 +182,11 @@ shifty.config.tags = {
 		exclusive	= true,
 		screen  = auxscreen,
 	},
+	["darktable"] = {
+		layout	= awful.layout.suit.max,
+		exclusive	= true,
+		screen	= primaryscreen,
+	},
 	["steam"] = {
 		layout	= awful.layout.suit.max,
 		exclusive	= true,
@@ -299,6 +304,12 @@ shifty.config.apps = {
 		match = { class = { "VirtualBox", } ,
 			  name  = { "SAP-Windows", } , },
 		tag   = "virtualbox",
+	},
+	{
+		match = { "darktable" },
+		tag   = "darktable",
+		float = false,
+		border_width = 0,
 	},
 	{
 		match = { "spotify" },
