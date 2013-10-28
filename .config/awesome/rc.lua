@@ -42,12 +42,12 @@ if hostname == "sapdeb2" then
 elseif hostname == "mainframe" and screen.count() == 3 then
   systrayscreen = 2
   primaryscreen = 1
-  auxscreen	= 3
+  auxscreen     = 3
 else
   autorunsapdeb = false
   systrayscreen = math.max(screen.count(), 1)
   primaryscreen = 1
-  auxscreen	= 1
+  auxscreen     = 1
 end
 
 -- write out workarea hints for every screen
