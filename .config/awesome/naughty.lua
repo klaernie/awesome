@@ -468,132 +468,135 @@ end
 
 -- DBUS/Notification support
 -- Notify
---if capi.dbus then
---    capi.dbus.add_signal("org.freedesktop.Notifications", function (data, appname, replaces_id, icon, title, text, actions, hints, expire)
---    args = { preset = config.default_preset }
---    if data.member == "Notify" then
---        if text ~= "" then
---            args.text = text
---            if title ~= "" then
---                args.title = title
---            end
---        else
---            if title ~= "" then
---                args.text = title
---            else
---                return
---            end
---        end
---        for i, obj in pairs(config.mapping) do
---            local filter, preset, s = obj[1], obj[2], 0
---            if (not filter.urgency or filter.urgency == hints.urgency) and
---               (not filter.category or filter.category == hints.category) and
---               (not filter.appname or filter.appname == appname) then
---                   args.preset = util.table.join(args.preset, preset)
---            end
---        end
---        if not args.preset.callback or (type(args.preset.callback) == "function" and
---            args.preset.callback(data, appname, replaces_id, icon, title, text, actions, hints, expire)) then
---            if icon ~= "" then
---                args.icon = icon
---            elseif hints.icon_data or hints.image_data then
---                if hints.icon_data == nil then hints.icon_data = hints.image_data end
---                -- icon_data is an array:
---                -- 1 -> width, 2 -> height, 3 -> rowstride, 4 -> has alpha
---                -- 5 -> bits per sample, 6 -> channels, 7 -> data
---
---                local imgdata = ""
---                -- If has alpha (ARGB32)
---                if hints.icon_data[6] == 4 then
---                    for i = 1, #hints.icon_data[7], 4 do
---                        imgdata = imgdata .. hints.icon_data[7]:sub(i, i + 2):reverse()
---                        imgdata = imgdata .. hints.icon_data[7]:sub(i + 3, i + 3)
---                    end
---                -- If has not alpha (RGB24)
---                elseif hints.icon_data[6] == 3 then
---                    for i = 1, #hints.icon_data[7], 3 do
---                        imgdata = imgdata .. hints.icon_data[7]:sub(i , i + 2):reverse()
---                        imgdata = imgdata .. string.format("%c", 255) -- alpha is 255
---                    end
---                end
---                if imgdata then
---                    args.icon = capi.image.argb32(hints.icon_data[1], hints.icon_data[2], imgdata)
---                end
---            end
---            if replaces_id and replaces_id ~= "" and replaces_id ~= 0 then
---                args.replaces_id = replaces_id
---            end
---            if expire and expire > -1 then
---                args.timeout = expire / 1000
---            end
---            local id = notify(args).id
---            return "u", id
---        end
---        return "u", "0"
---    elseif data.member == "CloseNotification" then
---        local obj = getById(appname)
---        if obj then
---           destroy(obj)
---        end
---    elseif data.member == "GetServerInfo" or data.member == "GetServerInformation" then
---        -- name of notification app, name of vender, version
---        return "s", "naughty", "s", "awesome", "s", capi.awesome.version:match("%d.%d"), "s", "1.0"
---    elseif data.member == "GetCapabilities" then
---        -- We actually do display the body of the message, we support <b>, <i>
---        -- and <u> in the body and we handle static (non-animated) icons.
---        return "as", { "s", "body", "s", "body-markup", "s", "icon-static" }
---    end
---    end)
---
---    capi.dbus.add_signal("org.freedesktop.DBus.Introspectable",
---    function (data, text)
---    if data.member == "Introspect" then
---        local xml = [=[<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object
---    Introspection 1.0//EN"
---    "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
---    <node>
---      <interface name="org.freedesktop.DBus.Introspectable">
---        <method name="Introspect">
---          <arg name="data" direction="out" type="s"/>
---        </method>
---      </interface>
---      <interface name="org.freedesktop.Notifications">
---        <method name="GetCapabilities">
---          <arg name="caps" type="as" direction="out"/>
---        </method>
---        <method name="CloseNotification">
---          <arg name="id" type="u" direction="in"/>
---        </method>
---        <method name="Notify">
---          <arg name="app_name" type="s" direction="in"/>
---          <arg name="id" type="u" direction="in"/>
---          <arg name="icon" type="s" direction="in"/>
---          <arg name="summary" type="s" direction="in"/>
---          <arg name="body" type="s" direction="in"/>
---          <arg name="actions" type="as" direction="in"/>
---          <arg name="hints" type="a{sv}" direction="in"/>
---          <arg name="timeout" type="i" direction="in"/>
---          <arg name="return_id" type="u" direction="out"/>
---        </method>
---        <method name="GetServerInformation">
---          <arg name="return_name" type="s" direction="out"/>
---          <arg name="return_vendor" type="s" direction="out"/>
---          <arg name="return_version" type="s" direction="out"/>
---          <arg name="return_spec_version" type="s" direction="out"/>
---        </method>
---        <method name="GetServerInfo">
---          <arg name="return_name" type="s" direction="out"/>
---          <arg name="return_vendor" type="s" direction="out"/>
---          <arg name="return_version" type="s" direction="out"/>
---       </method>
---      </interface>
---    </node>]=]
---        return "s", xml
---    end
---    end)
---
---    -- listen for dbus notification requests
---    capi.dbus.request_name("session", "org.freedesktop.Notifications")
---end
+
+function init_dbus(args)
+    if capi.dbus then
+        capi.dbus.add_signal("org.freedesktop.Notifications", function (data, appname, replaces_id, icon, title, text, actions, hints, expire)
+        args = { preset = config.default_preset }
+        if data.member == "Notify" then
+            if text ~= "" then
+                args.text = text
+                if title ~= "" then
+                    args.title = title
+                end
+            else
+                if title ~= "" then
+                    args.text = title
+                else
+                    return
+                end
+            end
+            for i, obj in pairs(config.mapping) do
+                local filter, preset, s = obj[1], obj[2], 0
+                if (not filter.urgency or filter.urgency == hints.urgency) and
+                   (not filter.category or filter.category == hints.category) and
+                   (not filter.appname or filter.appname == appname) then
+                       args.preset = util.table.join(args.preset, preset)
+                end
+            end
+            if not args.preset.callback or (type(args.preset.callback) == "function" and
+                args.preset.callback(data, appname, replaces_id, icon, title, text, actions, hints, expire)) then
+                if icon ~= "" then
+                    args.icon = icon
+                elseif hints.icon_data or hints.image_data then
+                    if hints.icon_data == nil then hints.icon_data = hints.image_data end
+                    -- icon_data is an array:
+                    -- 1 -> width, 2 -> height, 3 -> rowstride, 4 -> has alpha
+                    -- 5 -> bits per sample, 6 -> channels, 7 -> data
+
+                    local imgdata = ""
+                    -- If has alpha (ARGB32)
+                    if hints.icon_data[6] == 4 then
+                        for i = 1, #hints.icon_data[7], 4 do
+                            imgdata = imgdata .. hints.icon_data[7]:sub(i, i + 2):reverse()
+                            imgdata = imgdata .. hints.icon_data[7]:sub(i + 3, i + 3)
+                        end
+                    -- If has not alpha (RGB24)
+                    elseif hints.icon_data[6] == 3 then
+                        for i = 1, #hints.icon_data[7], 3 do
+                            imgdata = imgdata .. hints.icon_data[7]:sub(i , i + 2):reverse()
+                            imgdata = imgdata .. string.format("%c", 255) -- alpha is 255
+                        end
+                    end
+                    if imgdata then
+                        args.icon = capi.image.argb32(hints.icon_data[1], hints.icon_data[2], imgdata)
+                    end
+                end
+                if replaces_id and replaces_id ~= "" and replaces_id ~= 0 then
+                    args.replaces_id = replaces_id
+                end
+                if expire and expire > -1 then
+                    args.timeout = expire / 1000
+                end
+                local id = notify(args).id
+                return "u", id
+            end
+            return "u", "0"
+        elseif data.member == "CloseNotification" then
+            local obj = getById(appname)
+            if obj then
+               destroy(obj)
+            end
+        elseif data.member == "GetServerInfo" or data.member == "GetServerInformation" then
+            -- name of notification app, name of vender, version
+            return "s", "naughty", "s", "awesome", "s", capi.awesome.version:match("%d.%d"), "s", "1.0"
+        elseif data.member == "GetCapabilities" then
+            -- We actually do display the body of the message, we support <b>, <i>
+            -- and <u> in the body and we handle static (non-animated) icons.
+            return "as", { "s", "body", "s", "body-markup", "s", "icon-static" }
+        end
+        end)
+
+        capi.dbus.add_signal("org.freedesktop.DBus.Introspectable",
+        function (data, text)
+        if data.member == "Introspect" then
+            local xml = [=[<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object
+        Introspection 1.0//EN"
+        "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+        <node>
+          <interface name="org.freedesktop.DBus.Introspectable">
+            <method name="Introspect">
+              <arg name="data" direction="out" type="s"/>
+            </method>
+          </interface>
+          <interface name="org.freedesktop.Notifications">
+            <method name="GetCapabilities">
+              <arg name="caps" type="as" direction="out"/>
+            </method>
+            <method name="CloseNotification">
+              <arg name="id" type="u" direction="in"/>
+            </method>
+            <method name="Notify">
+              <arg name="app_name" type="s" direction="in"/>
+              <arg name="id" type="u" direction="in"/>
+              <arg name="icon" type="s" direction="in"/>
+              <arg name="summary" type="s" direction="in"/>
+              <arg name="body" type="s" direction="in"/>
+              <arg name="actions" type="as" direction="in"/>
+              <arg name="hints" type="a{sv}" direction="in"/>
+              <arg name="timeout" type="i" direction="in"/>
+              <arg name="return_id" type="u" direction="out"/>
+            </method>
+            <method name="GetServerInformation">
+              <arg name="return_name" type="s" direction="out"/>
+              <arg name="return_vendor" type="s" direction="out"/>
+              <arg name="return_version" type="s" direction="out"/>
+              <arg name="return_spec_version" type="s" direction="out"/>
+            </method>
+            <method name="GetServerInfo">
+              <arg name="return_name" type="s" direction="out"/>
+              <arg name="return_vendor" type="s" direction="out"/>
+              <arg name="return_version" type="s" direction="out"/>
+           </method>
+          </interface>
+        </node>]=]
+            return "s", xml
+        end
+        end)
+
+        -- listen for dbus notification requests
+        capi.dbus.request_name("session", "org.freedesktop.Notifications")
+    end
+end
 
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

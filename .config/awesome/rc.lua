@@ -6,6 +6,7 @@ require("awful.rules")
 require("beautiful")
 -- Notification library
 require("naughty")
+naughty.init_dbus()
 
 require("widget_fun")
 local widget_fun = widget_fun
