@@ -555,6 +555,8 @@ globalkeys = awful.util.table.join(
 						  awful.util.eval, nil,
 						  awful.util.getdir("cache") .. "/history_eval")
 					      end),
+    -- Menubar
+    awful.key({ modkey }, "p", function() menubar.show() end),
 
     -- shifty
     awful.key({modkey, "Control"}, "n",
