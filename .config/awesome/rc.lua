@@ -20,7 +20,7 @@ local menubar = require("menubar")
 -- vicious = require("vicious")
 
 -- shifty
-require("shifty")
+local shifty = require("shifty")
 
 -- Load Debian menu entries
 require("debian.menu")
