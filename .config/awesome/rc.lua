@@ -12,11 +12,12 @@ local naughty = require("naughty")
 naughty.init_dbus()
 local menubar = require("menubar")
 
-require("widget_fun")
-local widget_fun = widget_fun
+
+-- require("widget_fun")
+-- local widget_fun = widget_fun
 
 -- Vicious widgets
-vicious = require("vicious")
+-- vicious = require("vicious")
 
 -- shifty
 require("shifty")
@@ -375,8 +376,8 @@ mytextclock = awful.widget.textclock({ align = "right" }, " %a %b %d, %H:%M:%S "
 mysystray = widget({ type = "systray" })
 
 -- battery widget
-batterywidget = widget({type = "textbox", name = "batterywidget"})
-vicious.register(batterywidget, vicious.widgets.bat, widget_fun.batclosure(), 31, "BAT0")
+-- batterywidget = widget({type = "textbox", name = "batterywidget"})
+-- vicious.register(batterywidget, vicious.widgets.bat, widget_fun.batclosure(), 31, "BAT0")
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -466,7 +467,7 @@ for s = 1, screen.count() do
         mylayoutbox[s],
         mytextclock,
         s == systrayscreen and mysystray or nil,
-	batterywidget,
+--	batterywidget,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
