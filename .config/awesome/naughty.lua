@@ -509,7 +509,7 @@ function naughty.notify(args)
     return notification
 end
 
-function init_dbus()
+function naughty.init_dbus()
     -- DBUS/Notification support
     -- Notify
     if capi.dbus then
