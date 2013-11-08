@@ -1,8 +1,8 @@
 --[[
-                                             
-     Powerarrow Darker Awesome WM config 2.0 
-     github.com/copycat-killer               
-                                             
+
+     Powerarrow Darker Awesome WM config 2.0
+     github.com/copycat-killer
+
 --]]
 
 theme                               = {}
@@ -12,8 +12,8 @@ theme.wallpaper                     = themes_dir .. "/wall.png"
 theme.awesome_icon                  = themes_dir .. "/icons/awesome.png"
 
 theme.font                          = "Terminus 9"
-theme.fg_normal                     = "#DDDDFF"
-theme.fg_focus                      = "#F0DFAF"
+theme.fg_normal                     = "#aaaaaa"
+theme.fg_focus                      = "#FFFFFF"
 theme.fg_urgent                     = "#CC9393"
 theme.bg_normal                     = "#1A1A1A"
 theme.bg_focus                      = "#313131"
@@ -25,10 +25,10 @@ theme.border_focus                  = "#7F7F7F"
 theme.border_marked                 = "#CC9393"
 theme.titlebar_bg_focus             = "#FFFFFF"
 theme.titlebar_bg_normal            = "#FFFFFF"
-theme.taglist_fg_focus              = "#D8D782"
+theme.taglist_fg_focus              = "#FFFFFF"
 theme.taglist_bg_focus              = theme.bg_normal
 theme.tasklist_bg_focus             = "#1A1A1A"
-theme.tasklist_fg_focus             = "#D8D782"
+theme.tasklist_fg_focus             = theme.fg_focus
 theme.textbox_widget_margin_top     = 1
 theme.notify_fg                     = theme.fg_normal
 theme.notify_bg                     = theme.bg_normal
