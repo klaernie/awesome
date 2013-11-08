@@ -1,16 +1,19 @@
 -- Standard awesome library
-local gears = require("gears")
-local awful = require("awful")
-awful.rules = require("awful.rules")
+local gears	= require("gears")
+local awful	= require("awful")
+awful.rules	= require("awful.rules")
 require("awful.autofocus")
 -- Widget and layout library
-local wibox = require("wibox")
+local wibox	= require("wibox")
 -- Theme handling library
-local beautiful = require("beautiful")
+local beautiful	= require("beautiful")
 -- Notification library
-local naughty = require("naughty")
+local naughty	= require("naughty")
 naughty.init_dbus()
-local menubar = require("menubar")
+-- Menubar
+local menubar	= require("menubar")
+-- lain widgets
+local lain	= require("lain")
 
 
 -- require("widget_fun")
@@ -27,7 +30,7 @@ require("debian.menu")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init(awful.util.getdir("config") .. "/theme.lua")
+beautiful.init(awful.util.getdir("config") .. "/powerarrow-darker/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "x-terminal-emulator"
@@ -68,6 +71,11 @@ local wa_aux = io.open(awful.util.getdir("cache").."workarea"..hostname..".aux",
 wa_aux:write(screen[auxscreen].workarea["width"].."x"..screen[auxscreen].workarea["height"])
 wa_aux:close()
 
+-- setup wallpaper as machine-dependant
+beautiful.wallpaper = awful.util.getdir("config") .. "/bg/bg-" .. hostname
+if beautiful.wallpaper then
+    gears.wallpaper.centered(beautiful.wallpaper, nil, '#000000')
+end
 
 -- Default modkey.
 modkey = "Mod4"
@@ -348,7 +356,7 @@ shifty.config.defaults = {
 
 -- }}}
 
--- {{{ Menu
+-- Menu
 -- Create a laucher widget and a main menu
 myawesomemenu = {
    { "manual", terminal .. " -e man awesome" },
@@ -366,15 +374,9 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
 
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
--- }}}
 
--- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock(" %a %b %d, %H:%M:%S ", 1 )
-
--- battery widget
--- batterywidget = widget({type = "textbox", name = "batterywidget"})
--- vicious.register(batterywidget, vicious.widgets.bat, widget_fun.batclosure(), 31, "BAT0")
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -423,6 +425,65 @@ mytasklist.buttons = awful.util.table.join(
                                               if client.focus then client.focus:raise() end
                                           end))
 
+-- Separators
+spr = wibox.widget.textbox(' ')
+lspr = wibox.widget.background(wibox.widget.textbox(' '), "#313131")
+arrl = wibox.widget.imagebox()
+arrl:set_image(beautiful.arrl)
+arrl_dl = wibox.widget.imagebox()
+arrl_dl:set_image(beautiful.arrl_dl)
+arrl_ld = wibox.widget.imagebox()
+arrl_ld:set_image(beautiful.arrl_ld)
+arrr = wibox.widget.imagebox()
+arrr:set_image(beautiful.arrr)
+arrr_dl = wibox.widget.imagebox()
+arrr_dl:set_image(beautiful.arrr_dl)
+arrr_ld = wibox.widget.imagebox()
+arrr_ld:set_image(beautiful.arrr_ld)
+
+-- CPU
+cpuicon = wibox.widget.imagebox(beautiful.widget_cpu)
+cpuwidget = wibox.widget.background(lain.widgets.cpu({
+    settings = function()
+        widget:set_text(" " .. cpu_now.usage .. "% ")
+    end
+}), "#313131")
+
+-- Coretemp
+tempicon = wibox.widget.imagebox(beautiful.widget_temp)
+tempwidget = lain.widgets.temp({
+    settings = function()
+        widget:set_text(" " .. coretemp_now .. "°C ")
+    end
+})
+
+-- filesystem
+fsicon = wibox.widget.imagebox(beautiful.widget_hdd)
+fswidget = lain.widgets.fs({
+    settings  = function()
+        widget:set_text(" " .. fs_now.used .. "% ")
+    end
+})
+fswidgetbg = wibox.widget.background(fswidget, "#313131")
+
+-- Battery
+baticon = wibox.widget.imagebox(beautiful.widget_battery)
+batwidget = lain.widgets.bat({
+    settings = function()
+        if bat_now.perc == "N/A" then
+            bat_now.perc = "AC"
+            baticon:set_image(beautiful.widget_ac)
+        elseif tonumber(bat_now.perc) <= 5 then
+            baticon:set_image(beautiful.widget_battery_empty)
+        elseif tonumber(bat_now.perc) <= 15 then
+            baticon:set_image(beautiful.widget_battery_low)
+        else
+            baticon:set_image(beautiful.widget_battery)
+        end
+        widget:set_markup(" " .. bat_now.perc .. "% ")
+    end
+})
+
 -- make gtk icons brighter via chroma key properties
 xprop = assert(io.popen("xprop -root _NET_SUPPORTING_WM_CHECK"))
 wid = xprop:read():match("^_NET_SUPPORTING_WM_CHECK.WINDOW.: window id # (0x[%S]+)$")
@@ -454,15 +515,36 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(mylauncher)
+    left_layout:add(wibox.widget.background(mylauncher, "#313131"))
+    left_layout:add(arrr_ld)
     left_layout:add(mytaglist[s])
-    left_layout:add(mypromptbox[s])
+    left_layout:add(arrr_dl)
+    left_layout:add(wibox.widget.background(mypromptbox[s], "#313131"))
+    left_layout:add(arrr_ld)
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
---	batterywidget,
+    right_layout:add(spr)
+    right_layout:add(arrl)
+    right_layout:add(arrl_ld)
+    right_layout:add(fsicon)
+    right_layout:add(fswidgetbg)
+    right_layout:add(arrl_dl)
+    right_layout:add(tempicon)
+    right_layout:add(tempwidget)
+    right_layout:add(arrl_ld)
+    right_layout:add(cpuicon)
+    right_layout:add(cpuwidget)
+    right_layout:add(arrl_dl)
+    right_layout:add(baticon)
+    right_layout:add(batwidget)
+    right_layout:add(arrl_ld)
+    right_layout:add(lspr)
     if s == systrayscreen then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(lspr)
+    right_layout:add(arrl_dl)
     right_layout:add(mytextclock)
+    right_layout:add(arrl_ld)
     right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
