@@ -1,28 +1,36 @@
 -- Standard awesome library
-require("awful")
+local gears	= require("gears")
+local awful	= require("awful")
+awful.rules	= require("awful.rules")
 require("awful.autofocus")
-require("awful.rules")
+-- Widget and layout library
+local wibox	= require("wibox")
 -- Theme handling library
-require("beautiful")
+local beautiful	= require("beautiful")
 -- Notification library
-require("naughty")
+local naughty	= require("naughty")
 naughty.init_dbus()
+-- Menubar
+local menubar	= require("menubar")
+-- lain widgets
+local lain	= require("lain")
 
-require("widget_fun")
-local widget_fun = widget_fun
+
+-- require("widget_fun")
+-- local widget_fun = widget_fun
 
 -- Vicious widgets
-vicious = require("vicious")
+-- vicious = require("vicious")
 
 -- shifty
-require("shifty")
+local shifty = require("shifty")
 
 -- Load Debian menu entries
 require("debian.menu")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init(awful.util.getdir("config") .. "/theme.lua")
+beautiful.init(awful.util.getdir("config") .. "/powerarrow-darker/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "x-terminal-emulator"
@@ -95,6 +103,11 @@ local wa_aux = io.open(awful.util.getdir("cache").."workarea"..hostname..".aux",
 wa_aux:write(screen[auxscreen].workarea["width"].."x"..screen[auxscreen].workarea["height"])
 wa_aux:close()
 
+-- setup wallpaper as machine-dependant
+beautiful.wallpaper = awful.util.getdir("config") .. "/bg/bg-" .. hostname
+if beautiful.wallpaper then
+    gears.wallpaper.centered(beautiful.wallpaper, nil, '#000000')
+end
 
 -- Default modkey.
 modkey = "Mod4"
@@ -386,7 +399,7 @@ shifty.config.defaults = {
 
 -- }}}
 
--- {{{ Menu
+-- Menu
 -- Create a laucher widget and a main menu
 myawesomemenu = {
    { "manual", terminal .. " -e man awesome" },
@@ -402,20 +415,11 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                   }
                         })
 
-mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
+mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
--- }}}
 
--- {{{ Wibox
 -- Create a textclock widget
-mytextclock = awful.widget.textclock({ align = "right" }, " %a %b %d, %H:%M:%S ", 1 )
-
--- Create a systray
-mysystray = widget({ type = "systray" })
-
--- battery widget
-batterywidget = widget({type = "textbox", name = "batterywidget"})
-vicious.register(batterywidget, vicious.widgets.bat, widget_fun.batclosure(), 31, "BAT0")
+mytextclock = awful.widget.textclock(" %a %b %d, %H:%M:%S ", 1 )
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -464,6 +468,65 @@ mytasklist.buttons = awful.util.table.join(
                                               if client.focus then client.focus:raise() end
                                           end))
 
+-- Separators
+spr = wibox.widget.textbox(' ')
+lspr = wibox.widget.background(wibox.widget.textbox(' '), "#313131")
+arrl = wibox.widget.imagebox()
+arrl:set_image(beautiful.arrl)
+arrl_dl = wibox.widget.imagebox()
+arrl_dl:set_image(beautiful.arrl_dl)
+arrl_ld = wibox.widget.imagebox()
+arrl_ld:set_image(beautiful.arrl_ld)
+arrr = wibox.widget.imagebox()
+arrr:set_image(beautiful.arrr)
+arrr_dl = wibox.widget.imagebox()
+arrr_dl:set_image(beautiful.arrr_dl)
+arrr_ld = wibox.widget.imagebox()
+arrr_ld:set_image(beautiful.arrr_ld)
+
+-- CPU
+cpuicon = wibox.widget.imagebox(beautiful.widget_cpu)
+cpuwidget = wibox.widget.background(lain.widgets.cpu({
+    settings = function()
+        widget:set_text(" " .. cpu_now.usage .. "% ")
+    end
+}), "#313131")
+
+-- Coretemp
+tempicon = wibox.widget.imagebox(beautiful.widget_temp)
+tempwidget = lain.widgets.temp({
+    settings = function()
+        widget:set_text(" " .. coretemp_now .. "°C ")
+    end
+})
+
+-- filesystem
+fsicon = wibox.widget.imagebox(beautiful.widget_hdd)
+fswidget = lain.widgets.fs({
+    settings  = function()
+        widget:set_text(" " .. fs_now.used .. "% ")
+    end
+})
+fswidgetbg = wibox.widget.background(fswidget, "#313131")
+
+-- Battery
+baticon = wibox.widget.imagebox(beautiful.widget_battery)
+batwidget = lain.widgets.bat({
+    settings = function()
+        if bat_now.perc == "N/A" then
+            bat_now.perc = "AC"
+            baticon:set_image(beautiful.widget_ac)
+        elseif tonumber(bat_now.perc) <= 5 then
+            baticon:set_image(beautiful.widget_battery_empty)
+        elseif tonumber(bat_now.perc) <= 15 then
+            baticon:set_image(beautiful.widget_battery_low)
+        else
+            baticon:set_image(beautiful.widget_battery)
+        end
+        widget:set_markup(" " .. bat_now.perc .. "% ")
+    end
+})
+
 -- make gtk icons brighter via chroma key properties
 xprop = assert(io.popen("xprop -root _NET_SUPPORTING_WM_CHECK"))
 wid = xprop:read():match("^_NET_SUPPORTING_WM_CHECK.WINDOW.: window id # (0x[%S]+)$")
@@ -475,7 +538,7 @@ end
 
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
-    mypromptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
+    mypromptbox[s] = awful.widget.prompt()
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     mylayoutbox[s] = awful.widget.layoutbox(s)
@@ -485,30 +548,57 @@ for s = 1, screen.count() do
                            awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
                            awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
     -- Create a taglist widget
-    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, mytaglist.buttons)
+    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
 
     -- Create a tasklist widget
-    mytasklist[s] = awful.widget.tasklist(function(c)
-                                              return awful.widget.tasklist.label.currenttags(c, s)
-                                          end, mytasklist.buttons)
+    mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
     -- Create the wibox
     mywibox[s] = awful.wibox({ position = "top", screen = s })
-    -- Add widgets to the wibox - order matters
-    mywibox[s].widgets = {
-        {
-            mylauncher,
-            mytaglist[s],
-            mypromptbox[s],
-            layout = awful.widget.layout.horizontal.leftright
-        },
-        mylayoutbox[s],
-        mytextclock,
-        s == systrayscreen and mysystray or nil,
-	batterywidget,
-        mytasklist[s],
-        layout = awful.widget.layout.horizontal.rightleft
-    }
+
+    -- Widgets that are aligned to the left
+    local left_layout = wibox.layout.fixed.horizontal()
+    left_layout:add(wibox.widget.background(mylauncher, "#313131"))
+    left_layout:add(arrr_ld)
+    left_layout:add(spr)
+    left_layout:add(mytaglist[s])
+    left_layout:add(spr)
+    left_layout:add(arrr_dl)
+    left_layout:add(wibox.widget.background(mypromptbox[s], "#313131"))
+    left_layout:add(arrr_ld)
+
+    -- Widgets that are aligned to the right
+    local right_layout = wibox.layout.fixed.horizontal()
+    right_layout:add(spr)
+    right_layout:add(arrl)
+    right_layout:add(arrl_ld)
+    right_layout:add(fsicon)
+    right_layout:add(fswidgetbg)
+    right_layout:add(arrl_dl)
+    right_layout:add(tempicon)
+    right_layout:add(tempwidget)
+    right_layout:add(arrl_ld)
+    right_layout:add(cpuicon)
+    right_layout:add(cpuwidget)
+    right_layout:add(arrl_dl)
+    right_layout:add(baticon)
+    right_layout:add(batwidget)
+    right_layout:add(arrl_ld)
+    right_layout:add(lspr)
+    if s == systrayscreen then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(lspr)
+    right_layout:add(arrl_dl)
+    right_layout:add(mytextclock)
+    right_layout:add(arrl_ld)
+    right_layout:add(mylayoutbox[s])
+
+    -- Now bring it all together (with the tasklist in the middle)
+    local layout = wibox.layout.align.horizontal()
+    layout:set_left(left_layout)
+    layout:set_middle(mytasklist[s])
+    layout:set_right(right_layout)
+
+    mywibox[s]:set_widget(layout)
 end
 -- }}}
 
@@ -592,6 +682,8 @@ globalkeys = awful.util.table.join(
 						  awful.util.eval, nil,
 						  awful.util.getdir("cache") .. "/history_eval")
 					      end),
+    -- Menubar
+    awful.key({ modkey }, "p", function() menubar.show() end),
 
     -- shifty
     awful.key({modkey, "Control"}, "n",
@@ -664,12 +756,19 @@ for i = 0, (shifty.config.maxtags or 9) do
 -- Set keys
 root.keys(globalkeys)
 
--- Hook function to execute when focusing a client.
-client.add_signal("focus", function(c)
-    if not awful.client.ismarked(c) then
-        c.border_color = beautiful.border_focus
-    end
-end)
+-- No border for maximized clients
+client.connect_signal("focus",
+    function(c)
+        if c.maximized_horizontal == true and c.maximized_vertical == true then
+            c.border_width = 0
+            c.border_color = beautiful.border_normal
+        else
+            if not awful.client.ismarked(c) then
+                c.border_width = beautiful.border_width
+                c.border_color = beautiful.border_focus
+            end
+        end
+    end)
 
 -- Hook function to execute when unfocusing a client.
 client.add_signal("unfocus", function(c)
@@ -678,8 +777,27 @@ client.add_signal("unfocus", function(c)
     end
 end)
 
-client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+-- {{{ Arrange signal handler
+for s = 1, screen.count() do screen[s]:connect_signal("arrange", function ()
+        local clients = awful.client.visible(s)
+        local layout  = awful.layout.getname(awful.layout.get(s))
+
+        if #clients > 0 then -- Fine grained borders and floaters control
+            for _, c in pairs(clients) do -- Floaters always have borders
+                if awful.client.floating.get(c) or layout == "floating" then
+                    c.border_width = beautiful.border_width
+
+                -- No borders with only one visible client
+                elseif #clients == 1 or layout == "max" then
+                    clients[1].border_width = 0
+                    awful.client.moveresize(0, 0, 2, 2, clients[1])
+                else
+                    c.border_width = beautiful.border_width
+                end
+            end
+        end
+      end)
+end
 -- }}}
 
 -- vim: set ai: set tabstop=10:
