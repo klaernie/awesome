@@ -807,4 +807,4 @@ for s = 1, screen.count() do screen[s]:connect_signal("arrange", function ()
 end
 -- }}}
 
--- vim: set ai: set tabstop=10:
+-- vim: set ai tabstop=4 sw=4 expandtab:
