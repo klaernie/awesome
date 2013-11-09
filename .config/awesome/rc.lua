@@ -106,7 +106,14 @@ wa_aux:close()
 -- setup wallpaper as machine-dependant
 beautiful.wallpaper = awful.util.getdir("config") .. "/bg/bg-" .. hostname
 if beautiful.wallpaper then
-    gears.wallpaper.centered(beautiful.wallpaper, nil, '#000000')
+    if hostname == "eliza" then
+        gears.wallpaper.centered(beautiful.wallpaper, nil, '#000000')
+    else
+        for s = 1, screen.count() do
+            gears.wallpaper.maximized(beautiful.wallpaper, s, true)
+        end
+    end
+
 end
 
 -- Default modkey.
