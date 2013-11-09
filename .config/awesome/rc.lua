@@ -41,38 +41,6 @@ editor_cmd = terminal .. " -e " .. editor
 hostname = os.getenv("HOSTNAME")
 naughty.notify ( { text = "awesome running on " .. hostname } )
 
--- read screen names from xrandr (cached via file)
-function xrandr_screens ()
-    local screens = {}
-    local handle = io.popen("xrandr -q")
-    for display,primary,left in handle:read("*all"):gmatch("([%a%d-]+) connected (p*)r*i*m*a*r*y* *[%d]+x[%d]+%+([%d]+)%+[%d]+") do
-        if primary == "p" then
-            -- if this screen is the primary one it will get screen 1 in awesome
-            -- so let's force it to be the first in the list by overriding it's
-            -- left edge
-            screens[#screens+1] = {display=display,left=-1}
-        else
-            screens[#screens+1] = {display=display,left=tonumber(left)}
-        end
-    end
-    handle:close()
-
-    -- sort the screens by their left edge
-    table.sort(screens,function(a,b)
-                            return a.left<b.left
-                        end)
-
-    -- expand the temporary table back to
-    -- screens["input"]=screen id
-    local tmpscreens = {}
-    for index,spec in pairs(screens) do
-        tmpscreens[spec.display] = index
-    end
-    return tmpscreens
-end
-
-screens = xrandr_screens()
-
 if hostname == "sapdeb2" then
   autorunsapdeb = true
   systrayscreen = 1
