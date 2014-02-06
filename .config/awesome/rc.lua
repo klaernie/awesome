@@ -746,7 +746,7 @@ client.connect_signal("focus",
     end)
 
 -- Hook function to execute when unfocusing a client.
-client.add_signal("unfocus", function(c)
+client.connect_signal("unfocus", function(c)
     if not awful.client.ismarked(c) then
         c.border_color = beautiful.border_normal
     end
