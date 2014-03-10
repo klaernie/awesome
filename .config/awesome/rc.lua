@@ -344,7 +344,7 @@ shifty.config.apps = {
 		skip_taskbar	= true,
 	},
 	{
-		match = { "hl2_linux", "Steam", "steam" },
+		match = { "hl2_linux", "portal2_linux", "Steam", "steam" },
 		tag	= "steam",
 		border_width = 0,
 		float	= false,
