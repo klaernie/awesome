@@ -39,7 +39,7 @@ end
 function fs:show(t_out)
     fs:hide()
 
-    local f = io.popen(helpers.scripts_dir .. "dfs")
+    local f = io.popen("dfc -Ww -c never -t ext4,ext3 -s -f -T")
     ws = f:read("*all"):gsub("\n*$", "")
     f:close()
 
@@ -67,7 +67,7 @@ local function worker(args)
         fs_info = {}
         fs_now  = {}
 
-        local f = io.popen("LC_ALL=C df -kP")
+        local f = io.popen("LC_ALL=C df -kP " .. partition)
 
         for line in f:lines() do -- Match: (size) (used)(avail)(use%) (mount)
             local s     = string.match(line, "^.-[%s]([%d]+)")
