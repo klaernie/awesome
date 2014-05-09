@@ -480,7 +480,8 @@ fsicon = wibox.widget.imagebox(beautiful.widget_hdd)
 fswidget = lain.widgets.fs({
     settings  = function()
         widget:set_text(" " .. fs_now.used .. "% ")
-    end
+    end,
+    partition = "/media/Jen"
 })
 fswidgetbg = wibox.widget.background(fswidget, "#313131")
 
