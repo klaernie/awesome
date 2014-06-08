@@ -221,7 +221,7 @@ shifty.config.tags = {
 
 shifty.config.apps = {
 	{
-		match = { "chromium",
+		match = { "Chromium","chromium",
 		          "iceweasel", },
 		tag	= "web",
 	},
@@ -231,13 +231,13 @@ shifty.config.apps = {
 		float	= true,
 	},
 	{
-		match = { role = { "buddy_list", } },
+		match = { role = { "buddy_list", }, name = { "Hangouts",}, },
 		tag	= "chat",
 		slave	= false,
 		float   = false,
 	},
 	{
-		match = { role = { "conversation", "log_viewer", }, },
+		match = { role = { "conversation", "log_viewer", }, class = { "crx_nckgahadagoaajjgafhacjanaoiihapd", }, },
 		tag	= "chat",
 		slave	= true,
 		float	= false,
