@@ -221,8 +221,11 @@ shifty.config.tags = {
 
 shifty.config.apps = {
 	{
-		match = { "Chromium","chromium",
-		          "iceweasel", },
+		match = { role  = {	"browser", },
+				  class = {	"Chromium","chromium",
+							"Google-chrome", "google-chrome",
+							"iceweasel", },
+				},
 		tag	= "web",
 	},
 	{
