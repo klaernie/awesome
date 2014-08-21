@@ -479,12 +479,18 @@ tempwidget = lain.widgets.temp({
 })
 
 -- filesystem
+
+local homedisk = "/home"
+if hostname == "mainframe" then
+    homedisk = "/media/Jen"
+end
+
 fsicon = wibox.widget.imagebox(beautiful.widget_hdd)
 fswidget = lain.widgets.fs({
     settings  = function()
         widget:set_text(" " .. fs_now.used .. "% ")
     end,
-    partition = "/media/Jen"
+    partition=homedisk
 })
 fswidgetbg = wibox.widget.background(fswidget, "#313131")
 
