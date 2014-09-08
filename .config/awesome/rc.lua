@@ -300,6 +300,16 @@ shifty.config.apps = {
 		honorsizehints = false,
 	},
 	{
+		match = { "Nautilus" },
+		tag	= "nautilus",
+	},
+	{
+		match = { "file_progress", },
+		tag	= "nautilus",
+		float	= true,
+		ontop	= true,
+	},
+	{
 		match = { "gcalctool" },
 		intrusive = true,
 		float	= true,
