@@ -489,12 +489,18 @@ tempwidget = lain.widgets.temp({
 })
 
 -- filesystem
+
+local homedisk = "/home"
+if hostname == "mainframe" then
+    homedisk = "/media/Jen"
+end
+
 fsicon = wibox.widget.imagebox(beautiful.widget_hdd)
 fswidget = lain.widgets.fs({
     settings  = function()
         widget:set_text(" " .. fs_now.used .. "% ")
     end,
-    partition = "/media/Jen"
+    partition=homedisk
 })
 fswidgetbg = wibox.widget.background(fswidget, "#313131")
 
@@ -650,6 +656,13 @@ globalkeys = awful.util.table.join(
     -- run screensaver
     awful.key({ modkey,           }, "Pause", function () awful.util.spawn("xscreensaver-command -lock") end),
     awful.key({                   }, "XF86Launch1", function () awful.util.spawn("xscreensaver-command -lock") end),
+
+    -- change VTs
+    awful.key({ modkey, "Control" }, "F1", function () awful.util.spawn("xdotool key XF86_Switch_VT_1") end),
+    awful.key({ modkey, "Control" }, "F2", function () awful.util.spawn("xdotool key XF86_Switch_VT_2") end),
+    awful.key({ modkey, "Control" }, "F3", function () awful.util.spawn("xdotool key XF86_Switch_VT_3") end),
+    awful.key({ modkey, "Control" }, "F4", function () awful.util.spawn("xdotool key XF86_Switch_VT_4") end),
+    awful.key({ modkey, "Control" }, "F5", function () awful.util.spawn("xdotool key XF86_Switch_VT_5") end),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
