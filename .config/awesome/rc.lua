@@ -39,6 +39,9 @@ editor_cmd = terminal .. " -e " .. editor
 
 -- determine hostname from environment variable - remember to export it explicitly in ~/.Xsession
 hostname = os.getenv("HOSTNAME")
+if hostname == nil then
+    hostname = "undefined"
+end
 naughty.notify ( { text = "awesome running on " .. hostname } )
 
 if hostname == "sapdeb2" then
