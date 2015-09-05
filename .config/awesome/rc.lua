@@ -51,6 +51,11 @@ elseif hostname == "mainframe" and screen.count() == 3 then
   systrayscreen = screen["DVI-I-1"].index
   primaryscreen = screen["DP-1"].index
   auxscreen	= screen["DVI-D-0"].index
+elseif hostname == "mainframe" and screen.count() == 4 then
+  systrayscreen = screen["DVI-I-1"].index
+  primaryscreen = screen["DP-1"].index
+  auxscreen	= screen["DVI-D-0"].index
+  mediascreen	= screen["HDMI-0"].index
 else
   autorunsapdeb = false
   systrayscreen = math.max(screen.count(), 1)
