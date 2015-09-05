@@ -185,6 +185,14 @@ shifty.config.tags = {
 		init	= ( auxscreen ~= systrayscreen ) and ( screen.count() >= 3 ) ,
 		screen	= auxscreen,
 	},
+	["HDMI"] = {
+		layout	= awful.layout.suit.max,
+		mwfact	= 0.5,
+		exclusive	= false,
+		position	= 10,
+		init	= ( mediascreen ) and ( screen.count() >= 4 ) ,
+		screen	= mediascreen,
+	},
 	["util"] = {
 		layout	= awful.layout.suit.tile,
 		mwfact	= 0.5,
