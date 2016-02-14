@@ -286,9 +286,10 @@ shifty.config.apps = {
 		tag	= "LTS",
 	},
 	{
-		match = { class = { "Wfica", }, },
+		match = { class = { "Wfica", "citrix-receiver", }, },
 		tag	= "citrix",
 		honorsizehints = false,
+		float	= false,
 	},
 	{
 		match = { "synergys" },
