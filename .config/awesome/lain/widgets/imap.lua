@@ -7,46 +7,43 @@
 --]]
 
 local helpers      = require("lain.helpers")
-
 local naughty      = require("naughty")
 local wibox        = require("wibox")
-
-local io           = { popen  = io.popen }
 local string       = { format = string.format,
                        gsub   = string.gsub }
+local type         = type
 local tonumber     = tonumber
-
 local setmetatable = setmetatable
 
 -- Mail IMAP check
 -- lain.widgets.imap
-local imap = {}
 
 local function worker(args)
-    local args     = args or {}
+    local imap      = { widget = wibox.widget.textbox() }
+    local args      = args or {}
+    local server    = args.server
+    local mail      = args.mail
+    local password  = args.password
+    local port      = args.port or 993
+    local timeout   = args.timeout or 60
+    local is_plain  = args.is_plain or false
+    local followtag = args.followtag or false
+    local settings  = args.settings or function() end
 
-    local server   = args.server
-    local mail     = args.mail
-    local password = args.password
-
-    local port     = args.port or 993
-    local timeout  = args.timeout or 60
-    local is_plain = args.is_plain or false
-    local settings = args.settings or function() end
-
-    local head_command  = "curl --connect-timeout 1 -fsm 3"
+    local head_command = "curl --connect-timeout 3 -fsm 3"
     local request = "-X 'SEARCH (UNSEEN)'"
+
+    if not server or not mail or not password then return end
 
     helpers.set_map(mail, 0)
 
-    if not is_plain
-    then
-        local f = io.popen(password)
-        password = f:read("*all"):gsub("\n", "")
-        f:close()
+    if not is_plain then
+        if type(password) == "string" or type(password) == "table" then
+            helpers.async(password, function(f) password = f:gsub("\n", "") end)
+        elseif type(password) == "function" then
+            local p = password()
+        end
     end
-
-    imap.widget = wibox.widget.textbox('')
 
     function update()
         mail_notification_preset = {
@@ -54,34 +51,37 @@ local function worker(args)
             position = "top_left"
         }
 
-        curl = string.format("%s --url imaps://%s:%s/INBOX -u %s:%s %s -k",
-               head_command, server, port, mail, password, request)
-
-        f = io.popen(curl)
-        ws = f:read("*all")
-        f:close()
-
-        _, mailcount = string.gsub(ws, "%d+", "")
-        _ = nil
-
-        widget = imap.widget
-        settings()
-
-        if mailcount >= 1 and mailcount > helpers.get_map(mail)
-        then
-            if mailcount == 1 then
-                nt = mail .. " has one new message"
-            else
-                nt = mail .. " has <b>" .. mailcount .. "</b> new messages"
-            end
-            naughty.notify({ preset = mail_notification_preset, text = nt })
+        if followtag then
+            mail_notification_preset.screen = awful.screen.focused()
         end
 
-        helpers.set_map(mail, mailcount)
+        curl = string.format("%s --url imaps://%s:%s/INBOX -u %s:%q %s -k",
+               head_command, server, port, mail, password, request)
+
+        helpers.async(curl, function(f)
+            _, mailcount = string.gsub(f, "%d+", "")
+            _ = nil
+
+            widget = imap.widget
+            settings()
+
+            if mailcount >= 1 and mailcount > helpers.get_map(mail) then
+                if mailcount == 1 then
+                    nt = mail .. " has one new message"
+                else
+                    nt = mail .. " has <b>" .. mailcount .. "</b> new messages"
+                end
+                naughty.notify({ preset = mail_notification_preset, text = nt })
+            end
+
+            helpers.set_map(mail, mailcount)
+        end)
+
     end
 
-    helpers.newtimer(mail, timeout, update, true)
-    return imap.widget
+    imap.timer = helpers.newtimer(mail, timeout, update, true, true)
+
+    return imap
 end
 
-return setmetatable(imap, { __call = function(_, ...) return worker(...) end })
+return setmetatable({}, { __call = function(_, ...) return worker(...) end })

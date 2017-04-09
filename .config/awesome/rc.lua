@@ -9,7 +9,9 @@ local wibox	= require("wibox")
 local beautiful	= require("beautiful")
 -- Notification library
 local naughty	= require("naughty")
-naughty.init_dbus()
+local naughtydbus	= require("naughty.dbus")
+-- deactivated, as my naughty copy does not initialize
+-- naughty.init_dbus()
 -- Menubar
 local menubar	= require("menubar")
 -- lain widgets
@@ -424,7 +426,7 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
 
 -- Create a textclock widget
-mytextclock = awful.widget.textclock(" %a %b %d, %H:%M:%S ", 1 )
+mytextclock = wibox.widget.textclock(" %a %b %d, %H:%M:%S ", 1 )
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -475,7 +477,7 @@ mytasklist.buttons = awful.util.table.join(
 
 -- Separators
 spr = wibox.widget.textbox(' ')
-lspr = wibox.widget.background(wibox.widget.textbox(' '), "#313131")
+lspr = wibox.container.background(wibox.widget.textbox(' '), "#313131")
 arrl = wibox.widget.imagebox()
 arrl:set_image(beautiful.arrl)
 arrl_dl = wibox.widget.imagebox()
@@ -491,7 +493,7 @@ arrr_ld:set_image(beautiful.arrr_ld)
 
 -- CPU
 cpuicon = wibox.widget.imagebox(beautiful.widget_cpu)
-cpuwidget = wibox.widget.background(lain.widgets.cpu({
+cpuwidget = wibox.container.background(lain.widgets.cpu({
     settings = function()
         widget:set_text(" " .. cpu_now.usage .. "% ")
     end
@@ -519,7 +521,7 @@ fswidget = lain.widgets.fs({
     end,
     partition=homedisk
 })
-fswidgetbg = wibox.widget.background(fswidget, "#313131")
+fswidgetbg = wibox.container.background(fswidget, "#313131")
 
 -- Battery
 baticon = wibox.widget.imagebox(beautiful.widget_battery)
@@ -570,13 +572,13 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(wibox.widget.background(mylauncher, "#313131"))
+    left_layout:add(wibox.container.background(mylauncher, "#313131"))
     left_layout:add(arrr_ld)
     left_layout:add(spr)
     left_layout:add(mytaglist[s])
     left_layout:add(spr)
     left_layout:add(arrr_dl)
-    left_layout:add(wibox.widget.background(mypromptbox[s], "#313131"))
+    left_layout:add(wibox.container.background(mypromptbox[s], "#313131"))
     left_layout:add(arrr_ld)
 
     -- Widgets that are aligned to the right
@@ -781,7 +783,7 @@ client.connect_signal("focus",
         if c.maximized_horizontal == true and c.maximized_vertical == true then
             c.border_color = beautiful.border_normal
         else
-            if not awful.client.ismarked(c) then
+            if not awful.client.marked(c) then
                 c.border_color = beautiful.border_focus
             end
         end
