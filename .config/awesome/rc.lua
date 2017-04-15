@@ -556,6 +556,11 @@ awful.rules.rules = {
      }
     },
 
+    { rule_any = { class = {"URxvt"} },
+      properties = { size_hints_honor = false,
+      }
+    },
+
     -- Floating clients.
     { rule_any = {
         instance = {
