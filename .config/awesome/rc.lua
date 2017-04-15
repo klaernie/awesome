@@ -13,6 +13,7 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 
 local lain = require("lain")
 local markup = lain.util.markup
+local separators = lain.util.separators
 
 -- Load Debian menu entries
 require("debian.menu")
@@ -62,17 +63,17 @@ if hostname == "sapdeb2" then
   autorunsapdeb = true
   systrayscreen = 1
   primaryscreen = 1
-  auxscreen	= math.max(screen.count(),1) ,
+  auxscreen     = math.max(screen.count(),1) ,
   awful.util.spawn( os.getenv("HOME") .. "/bin/enable-DP4.sh" )
 elseif hostname == "mainframe" and screen.count() == 3 then
   systrayscreen = screen["DVI-I-1"].index
   primaryscreen = screen["DP-1"].index
-  auxscreen	= screen["DVI-D-0"].index
+  auxscreen     = screen["DVI-D-0"].index
 elseif hostname == "mainframe" and screen.count() == 4 then
   systrayscreen = screen["DVI-I-1"].index
   primaryscreen = screen["DP-1"].index
-  auxscreen	= screen["DVI-D-0"].index
-  mediascreen	= screen["HDMI-0"].index
+  auxscreen     = screen["DVI-D-0"].index
+  mediascreen   = screen["HDMI-0"].index
 else
   autorunsapdeb = false
   systrayscreen = math.max(screen.count(), 1)
@@ -229,7 +230,7 @@ local cpu = lain.widget.cpu({
 
 -- Coretemp
 tempicon = wibox.widget.imagebox(beautiful.widget_temp)
-tempwidget = lain.widget.temp({
+temp = lain.widget.temp({
     settings = function()
         widget:set_text(" " .. coretemp_now .. "°C ")
     end
@@ -238,7 +239,7 @@ tempwidget = lain.widget.temp({
 -- filesystem
 
 fsicon = wibox.widget.imagebox(beautiful.widget_hdd)
-fswidget = lain.widget.fs({
+fs = lain.widget.fs({
     settings  = function()
         widget:set_text(" " .. fs_now.used .. "% ")
     end,
@@ -247,7 +248,7 @@ fswidget = lain.widget.fs({
 
 -- Battery
 baticon = wibox.widget.imagebox(beautiful.widget_battery)
-batwidget = lain.widget.bat({
+bat = lain.widget.bat({
     settings = function()
         if bat_now.perc == "N/A" then
             bat_now.perc = "AC"
@@ -262,6 +263,13 @@ batwidget = lain.widget.bat({
         widget:set_markup(" " .. bat_now.perc .. "% ")
     end
 })
+
+-- Separators
+local spr     = wibox.widget.textbox(' ')
+local arrl_dl = separators.arrow_left(beautiful.bg_focus, "alpha")
+local arrl_ld = separators.arrow_left("alpha", beautiful.bg_focus)
+local arrr_dl = separators.arrow_right("alpha", beautiful.bg_focus)
+local arrr_ld = separators.arrow_right(beautiful.bg_focus, "alpha")
 
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
@@ -294,25 +302,39 @@ awful.screen.connect_for_each_screen(function(s)
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            mylauncher,
+            wibox.container.background(mylauncher,beautiful.bg_focus),
             s.mytaglist,
+            arrr_dl,
+            arrr_ld,
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            wibox.container.background(fsicon, "#313131"),
-            wibox.container.background(fswidget.widget, "#313131"),
-            tempicon,
-            tempwidget,
-            wibox.container.background(cpuicon, "#313131"),
-            wibox.container.background(cpu.widget, "#313131"),
-            baticon,
-            batwidget,
+            arrl_ld,
+            arrl_dl,
+            fsicon,
+            fs.widget,
+            arrl_ld,
+            wibox.container.background(tempicon, beautiful.bg_focus),
+            wibox.container.background(temp.widget, beautiful.bg_focus),
+            arrl_dl,
+            cpuicon,
+            cpu.widget,
+            arrl_ld,
+            wibox.container.background(baticon, beautiful.bg_focus),
+            wibox.container.background(bat.widget, beautiful.bg_focus),
             mykeyboardlayout,
+            arrl_dl,
+            spr,
             wibox.widget.systray(),
+            spr,
+            arrl_ld,
+            arrl_dl,
             mytextclock,
-            s.mylayoutbox,
+            spr,
+            arrl_ld,
+            wibox.container.background( s.mylayoutbox, beautiful.bg_focus),
         },
     }
 end)
