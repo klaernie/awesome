@@ -18,7 +18,7 @@ If you still have to use branch 3.5.x, you can refer to the commit 301faf5_, but
 Description
 -----------
 
-Successor of awesome-vain_, this module provides new layouts, asynchronous widgets and utility functions, with the aim of improving Awesome_ usability and configurability.
+Successor of awesome-vain_, this module provides alternative layouts, asynchronous widgets and utility functions for Awesome_ WM.
 
 Read the wiki_ for all the info.
 
@@ -37,7 +37,7 @@ Just make sure that:
 
 - You eventually update ``wiki`` submodule with a thorough section.
 
-Contributed widgets have to be put in ``lain/widgets/contrib``.
+Contributed widgets have to be put in ``widget/contrib``.
 
 Screenshots
 -----------

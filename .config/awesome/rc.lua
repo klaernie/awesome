@@ -11,6 +11,9 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 
+local lain = require("lain")
+local markup = lain.util.markup
+
 -- Load Debian menu entries
 require("debian.menu")
 
@@ -41,12 +44,44 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
+beautiful.init(awful.util.getdir("config") .. "/powerarrow-darker-theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "x-terminal-emulator"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
+
+-- determine hostname from environment variable - remember to export it explicitly in ~/.Xsession
+hostname = os.getenv("HOSTNAME")
+if hostname == nil then
+    hostname = "undefined"
+end
+naughty.notify ( { text = "awesome running on " .. hostname } )
+
+if hostname == "sapdeb2" then
+  autorunsapdeb = true
+  systrayscreen = 1
+  primaryscreen = 1
+  auxscreen	= math.max(screen.count(),1) ,
+  awful.util.spawn( os.getenv("HOME") .. "/bin/enable-DP4.sh" )
+elseif hostname == "mainframe" and screen.count() == 3 then
+  systrayscreen = screen["DVI-I-1"].index
+  primaryscreen = screen["DP-1"].index
+  auxscreen	= screen["DVI-D-0"].index
+elseif hostname == "mainframe" and screen.count() == 4 then
+  systrayscreen = screen["DVI-I-1"].index
+  primaryscreen = screen["DP-1"].index
+  auxscreen	= screen["DVI-D-0"].index
+  mediascreen	= screen["HDMI-0"].index
+else
+  autorunsapdeb = false
+  systrayscreen = math.max(screen.count(), 1)
+  primaryscreen = 1
+  auxscreen     = 1
+end
+
+-- setup wallpaper as machine-dependant
+beautiful.wallpaper = awful.util.getdir("config") .. "/bg/bg-" .. hostname
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -57,22 +92,22 @@ modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    awful.layout.suit.floating,
     awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
+--    awful.layout.suit.tile.left,
+--    awful.layout.suit.tile.bottom,
+--    awful.layout.suit.tile.top,
+--    awful.layout.suit.fair,
+--    awful.layout.suit.fair.horizontal,
+--    awful.layout.suit.spiral,
+--    awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
+--    awful.layout.suit.max.fullscreen,
     awful.layout.suit.magnifier,
     awful.layout.suit.corner.nw,
     -- awful.layout.suit.corner.ne,
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
+    awful.layout.suit.floating,
 }
 -- }}}
 
@@ -97,6 +132,7 @@ myawesomemenu = {
    { "hotkeys", function() return false, hotkeys_popup.show_help end},
    { "manual", terminal .. " -e man awesome" },
    { "edit config", editor_cmd .. " " .. awesome.conffile },
+   { "edit config - terminal edition", terminal .. " --working-directory=" .. awful.util.getdir("config") },
    { "restart", awesome.restart },
    { "quit", function() awesome.quit() end}
 }
@@ -119,7 +155,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+mytextclock = wibox.widget.textclock(" %a %b %d, %H:%M:%S ", 1 )
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = awful.util.table.join(
@@ -172,12 +208,60 @@ local function set_wallpaper(s)
         if type(wallpaper) == "function" then
             wallpaper = wallpaper(s)
         end
-        gears.wallpaper.maximized(wallpaper, s, true)
+        if s.workarea.width <= 1024 then
+            gears.wallpaper.centered(wallpaper, s, beautiful.bg_color)
+        else
+            gears.wallpaper.maximized(wallpaper, s, true)
+        end
     end
 end
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
+
+-- CPU
+local cpuicon = wibox.widget.imagebox(beautiful.widget_cpu)
+local cpu = lain.widget.cpu({
+    settings = function()
+        widget:set_markup(markup.font(beautiful.font, " " .. cpu_now.usage .. "% "))
+    end
+})
+
+-- Coretemp
+tempicon = wibox.widget.imagebox(beautiful.widget_temp)
+tempwidget = lain.widget.temp({
+    settings = function()
+        widget:set_text(" " .. coretemp_now .. "°C ")
+    end
+})
+
+-- filesystem
+
+fsicon = wibox.widget.imagebox(beautiful.widget_hdd)
+fswidget = lain.widget.fs({
+    settings  = function()
+        widget:set_text(" " .. fs_now.used .. "% ")
+    end,
+    partition="/home"
+})
+
+-- Battery
+baticon = wibox.widget.imagebox(beautiful.widget_battery)
+batwidget = lain.widget.bat({
+    settings = function()
+        if bat_now.perc == "N/A" then
+            bat_now.perc = "AC"
+            baticon:set_image(beautiful.widget_ac)
+        elseif tonumber(bat_now.perc) <= 5 then
+            baticon:set_image(beautiful.widget_battery_empty)
+        elseif tonumber(bat_now.perc) <= 15 then
+            baticon:set_image(beautiful.widget_battery_low)
+        else
+            baticon:set_image(beautiful.widget_battery)
+        end
+        widget:set_markup(" " .. bat_now.perc .. "% ")
+    end
+})
 
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
@@ -217,6 +301,14 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            wibox.container.background(fsicon, "#313131"),
+            wibox.container.background(fswidget.widget, "#313131"),
+            tempicon,
+            tempwidget,
+            wibox.container.background(cpuicon, "#313131"),
+            wibox.container.background(cpu.widget, "#313131"),
+            baticon,
+            batwidget,
             mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
