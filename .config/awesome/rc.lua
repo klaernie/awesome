@@ -402,6 +402,16 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
 
+    -- make a screenshot
+    awful.key({                   }, "Print", function () awful.util.spawn("gnome-screenshot") end,
+              {description = "make a screenshot", group = "awesome"}),
+
+    -- run screensaver
+    awful.key({ modkey,           }, "Pause", function () awful.util.spawn("xscreensaver-command -lock") end,
+              {description = "lock screen with xscreensaver", group = "awesome"}),
+    awful.key({                   }, "XF86Launch1", function () awful.util.spawn("xscreensaver-command -lock") end,
+              {description = "lock screen with xscreensaver", group = "awesome"}),
+
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
               {description = "increase master width factor", group = "layout"}),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)          end,
