@@ -572,6 +572,13 @@ awful.rules.rules = {
       }
     },
 
+    { rule_any = { instance = {"crx_knipolnnllmklapflnccelgolnpehhpl"}}, -- Google Hangouts App
+      properties = {
+          tag = "chat",
+          sticky = false,
+      }
+    },
+
     { rule_any = { class = {"URxvt"} },
       properties = {
           size_hints_honor = false,
