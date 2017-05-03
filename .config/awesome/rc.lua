@@ -276,7 +276,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "web", "term", "3", "4", "5", "6", "mutt", "irssi", "chat" }, s, awful.layout.layouts[1])
+    awful.tag({ "web", "term", "3", "4", "5", "spotify", "mutt", "irssi", "chat" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -569,6 +569,18 @@ awful.rules.rules = {
     { rule_any = { role = {"browser"} },
       properties = {
           tag = "web",
+      }
+    },
+
+    { rule_any = {
+        instance = {"crx_cnkjkdjlofllcpbemipjbcpfnglbgieh"}, -- spotify web player extension
+        class = {"Spotify"}, -- Spotify Desktop App
+        name = {"Spotify"}, -- Spotify Desktop App
+      },
+      properties = {
+          tag = "spotify",
+          floating = false,
+          sticky = false,
       }
     },
 
