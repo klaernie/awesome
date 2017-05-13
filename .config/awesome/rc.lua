@@ -598,6 +598,12 @@ awful.rules.rules = {
       }
     },
 
+    { rule_any = { instance = {"mutt"} },
+      properties = {
+          tag = "mutt",
+      }
+    },
+
     -- Floating clients.
     { rule_any = {
         instance = {
