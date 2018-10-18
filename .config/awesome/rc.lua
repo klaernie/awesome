@@ -600,9 +600,10 @@ awful.rules.rules = {
       }
     },
 
-    { rule_any = { instance = {"crx_knipolnnllmklapflnccelgolnpehhpl"}}, -- Google Hangouts App
+    { rule_any = { instance = {"crx_nckgahadagoaajjgafhacjanaoiihapd","crx_knipolnnllmklapflnccelgolnpehhpl"}}, -- Google Hangouts App
       properties = {
           tag = "chat",
+          floating = false,
           sticky = false,
       }
     },
