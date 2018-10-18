@@ -578,6 +578,17 @@ awful.rules.rules = {
     },
 
     { rule_any = {
+        class = {"trygame-win32-shipping.exe"},
+        name = {"Steam"}, -- Spotify Desktop App
+      },
+      properties = {
+          tag = "steam",
+          floating = false,
+          sticky = false,
+      }
+    },
+
+    { rule_any = {
         instance = {"crx_cnkjkdjlofllcpbemipjbcpfnglbgieh"}, -- spotify web player extension
         class = {"Spotify"}, -- Spotify Desktop App
         name = {"Spotify"}, -- Spotify Desktop App
