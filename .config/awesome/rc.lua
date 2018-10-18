@@ -456,7 +456,12 @@ globalkeys = awful.util.table.join(
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+              {description = "show the menubar", group = "launcher"}),
+
+    -- Media Control
+    awful.key({}, "XF86AudioPlay", function () awful.util.spawn("playerctl play-pause") end),
+    awful.key({}, "XF86AudioPrev", function () awful.util.spawn("playerctl previous") end),
+    awful.key({}, "XF86AudioNext", function () awful.util.spawn("playerctl next") end)
 )
 
 clientkeys = awful.util.table.join(
